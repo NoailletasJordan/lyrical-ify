@@ -1,0 +1,84 @@
+{
+  "name": "lyrical-ify",
+  "productName": "lyrical-ify",
+  "version": "0.1.0",
+  "description": "Get your currently playing music's lyrics",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NoailletasJordan/lirical-ify/"
+  },
+  "scripts": {
+    "start": "electron-forge start",
+    "w": "concurrently \"nodemon --exec electron-forge start .\" \"sass --watch ./renderer/index.scss ./renderer/index.css\"",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "publish": "electron-forge publish",
+    "lint": "echo \"No linting configured\""
+  },
+  "keywords": [],
+  "author": {
+    "name": "jordan Noailletas",
+    "email": "j.noailletas@gmail.com"
+  },
+  "license": "MIT",
+  "config": {
+    "forge": {
+      "packagerConfig": {},
+      "publishers": [
+        {
+          "name": "@electron-forge/publisher-github",
+          "config": {
+            "repository": {
+              "owner": "NoailletasJordan",
+              "name": "lyrical-ify"
+            },
+            "draft": "true"
+          }
+        }
+      ],
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "lyrical_ify",
+            "certificateFile": "./private/JordanNoailletas.pfx",
+            "certificatePassword": ""
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "config": {}
+        }
+      ]
+    }
+  },
+  "dependencies": {
+    "concurrently": "^5.3.0",
+    "electron-log": "^4.2.4",
+    "electron-squirrel-startup": "^1.0.0",
+    "electron-window-state": "^5.0.3",
+    "update-electron-app": "^1.5.0"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "6.0.0-beta.53",
+    "nodemon": "^2.0.4",
+    "@electron-forge/maker-deb": "6.0.0-beta.53",
+    "@electron-forge/maker-rpm": "6.0.0-beta.53",
+    "@electron-forge/maker-squirrel": "6.0.0-beta.53",
+    "@electron-forge/maker-zip": "6.0.0-beta.53",
+    "@electron-forge/publisher-github": "6.0.0-beta.52",
+    "electron": "10.1.2",
+    "node-sass": "^4.14.1"
+  }
+}
