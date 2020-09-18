@@ -3,22 +3,27 @@
 const b1 = document.querySelector('.button1')
 const b2 = document.querySelector('.button2')
 const b3 = document.querySelector('.button3')
+const lyrics = document.querySelector('.lyrics')
 
 // Require
 const { shell } = require('electron')
 var querystring = require('querystring')
 const { ipcRenderer } = require('electron/renderer')
+const fetchMethod = require('../fetch')
 
 // Variables
 let client_id = null
 let redirect_uri = null
+let genius_token = null
+
 let access_token = null
-let refreshtoken = null
+let refresh_token = null
 
 // Fonctions
-const Authorize = () => {
+const authorize = () => {
   if (!client_id) return console.log('no client_id or uri')
 
+  console.log('authorize()')
   const scope = 'user-read-currently-playing'
   shell.openExternal(
     'https://accounts.spotify.com/authorize?' +
@@ -31,57 +36,111 @@ const Authorize = () => {
   )
 }
 
+const refreshTheToken = async () => {
+  const fetchUrl =
+    'http://localhost:8888/refresh_token?' +
+    querystring.stringify({
+      refresh_token,
+    })
+
+  const data = await fetchMethod(fetchUrl)
+
+  //error
+  if (data.e) return
+
+  console.log('refresh : ' + data.res.access_token)
+  access_token = data.res.access_token
+}
+
 const getCurrentMusic = async () => {
   if (!access_token) return console.log('access_token null')
 
-  const resBrut = await fetch(
-    'https://api.spotify.com/v1/me/player/currently-playing',
-    {
-      headers: {
-        Authorization: 'Bearer ' + access_token,
-      },
-    }
+  const fetchUrl = 'https://api.spotify.com/v1/me/player/currently-playing'
+
+  const option = {
+    headers: {
+      Authorization: 'Bearer ' + access_token,
+    },
+  }
+
+  const data = await fetchMethod(fetchUrl, option)
+
+  //error
+  if (data.e) return
+
+  const currentMusic = {
+    name: data.res.item.name,
+    artist: data.res.item.artists[0].name,
+    album: data.res.item.album.name,
+  }
+
+  return currentMusic
+}
+
+const getUrlFromGenius = async (name, artist) => {
+  if (!genius_token) return console.log('error no genius_token')
+
+  console.log('bgeturlfromgenius : ', name, artist)
+
+  const nameMinusParentheses = name.replace(/\(.*?\)/gm, '')
+
+  console.log('query : ' + nameMinusParentheses + ' ' + artist)
+
+  const option = {
+    headers: {
+      Authorization: 'Bearer ' + genius_token,
+    },
+  }
+  const fetchUrl =
+    'https://api.genius.com/search?' +
+    querystring.stringify({
+      q: `${nameMinusParentheses} ${artist}`,
+    })
+
+  const data = await fetchMethod(fetchUrl, option)
+
+  //error
+  if (data.e) return
+
+  return {
+    url: data.res.response.hits[0].result.url,
+    thumbnail: data.res.response.hits[0].result.song_art_image_thumbnail_url,
+  }
+}
+
+const runSpotifyAndGenius = async () => {
+  if (!genius_token) return console.log('error no genius_token')
+  if (!access_token) return console.log('access_token null')
+
+  // Get music from spotify
+  const currentMusic = await getCurrentMusic()
+
+  console.log('b3 : ', currentMusic.name, currentMusic.artist)
+  // Get url and thumbnail from genius
+  const { url, thumbnail } = await getUrlFromGenius(
+    currentMusic.name,
+    currentMusic.artist
   )
 
-  console.log(resBrut.status)
-
-  if (resBrut.status > 200 && resBrut.status < 400) {
-    // Not listening music
-    return console.log('user not listening music')
-  } else if (resBrut.status >= 400) {
-    // Error 400+
-    return console.log('Error ' + resBrut.status)
-  }
-
-  // OK
-  const res = await resBrut.json()
-
-  console.log(resBrut)
-  console.log(res)
-  const currentMusic = {
-    name: res.item.name,
-    artist: res.item.artists[0].name,
-    album: res.item.album.name,
-  }
-  console.log('current : ' + currentMusic.name)
-  console.log('current : ' + currentMusic.artist)
-  console.log('current : ' + currentMusic.album)
-  return currentMusic
+  // Send url to main
+  ipcRenderer.send('load-url', url)
+  console.log(url)
 }
 
 // Listeners
 // Button 1
 b1.addEventListener('click', () => {
-  Authorize()
+  authorize()
 })
 
 b3.addEventListener('click', () => {
-  getCurrentMusic()
-  // Update genius
+  runSpotifyAndGenius()
 })
 
 // Get current info
-b2.addEventListener('click', async () => {})
+b2.addEventListener('click', () => {
+  refreshTheToken()
+})
 
 // ipcRenderer
 ipcRenderer.on('mess', (e, args) => {
@@ -89,16 +148,41 @@ ipcRenderer.on('mess', (e, args) => {
 })
 
 // ipcRenderer
-ipcRenderer.on('reply-token', (e, args) => {
-  access_token = args.access_token
-  refresh_token = args.refresh_token
-  console.log(args.access_token, args.refresh_token)
+ipcRenderer.on('trigger-auth', (e, args) => {
+  authorize()
+})
+
+// trigger refresh
+ipcRenderer.on('trigger-refresh', (e, refr) => {
+  refresh_token = refr
+  refreshTheToken()
 })
 
 // ipcRenderer
-ipcRenderer.on('initial-variable', (e, args) => {
-  client_id = args.client_id
-  redirect_uri = args.redirect_uri
+ipcRenderer.on('reply-token', (e, args) => {
+  access_token = args.access_token
+  refresh_token = args.refresh_token
 })
 
-//ipcRenderer.invoke('require-token')
+// Get initial variables from .env
+ipcRenderer.on('update-variable', (e, args) => {
+  client_id = args.client_id
+  redirect_uri = args.redirect_uri
+  genius_token = args.genius_token
+})
+
+// Add the lyrics into html
+ipcRenderer.on('reply-html', (e, html) => {
+  console.log('reply-html')
+  lyrics.innerHTML = html
+  console.log(html)
+})
+
+// trigger runSpotifyAndGenius
+ipcRenderer.on('trigger-run-script', (e, html) => {
+  runSpotifyAndGenius()
+})
+
+ipcRenderer.on('mess', (e, arg) => {
+  console.log(arg)
+})
