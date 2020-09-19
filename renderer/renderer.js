@@ -1,10 +1,8 @@
 // Renderer
 // Dom
-const b1 = document.querySelector('.button1')
-const b2 = document.querySelector('.button2')
-const b3 = document.querySelector('.button3')
-const bLogout = document.querySelector('.logout')
-const lyrics = document.querySelector('.lyrics')
+const bLoginDom = document.querySelector('.login-button-hover')
+const bLogoutDom = document.querySelector('.logout-button-hover')
+const lyricsDom = document.querySelector('.lyrics')
 
 // Require
 
@@ -25,21 +23,17 @@ let tokenTimerExpire = null
 
 // Listeners
 // Button 1
-b1.addEventListener('click', () => {
+bLoginDom.addEventListener('click', () => {
   authorize(client_id, redirect_uri)
 })
 
-// Get current info
-b2.addEventListener('click', () => {
-  access_token = refreshTheToken()
-})
-
-b3.addEventListener('click', () => {
+// search music
+/* b3.addEventListener('click', () => {
   musicState = runSpotifyAndGenius(access_token, genius_token, musicState)
-})
+}) */
 
 // Logout
-bLogout.addEventListener('click', () => {
+bLogoutDom.addEventListener('click', () => {
   handleLogout()
 })
 
@@ -73,7 +67,7 @@ ipcRenderer.on('update-variable', (e, args) => {
 // Add the lyrics into html
 ipcRenderer.on('reply-html', (e, html) => {
   console.log('reply-html')
-  lyrics.innerHTML = html
+  lyricsDom.innerHTML = html
 })
 
 // trigger runSpotifyAndGenius

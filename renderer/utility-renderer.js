@@ -2,6 +2,22 @@
 const musicImageDom = document.querySelector('.music-image')
 const musicTitleDom = document.querySelector('.music-title')
 const musicAlbumDom = document.querySelector('.music-album')
+const bLoginDom = document.querySelector('.login-button-hover')
+const logoutContainerDom = document.querySelector('.logout-container')
+const appTitleDom = document.querySelector('h1')
+const logRequestDom = document.querySelector('.log-request')
+const loggedWithoutMusicDom = document.querySelector('.logged-without-music')
+const musicHeaderContainerEmptyDom = document.querySelector(
+  '.music-header-container-empty'
+)
+const musicHeaderContainerDom = document.querySelector(
+  '.music-header-container'
+)
+const noLyricsFoundTextDom = document.querySelector('.no-lyrics-found-text')
+const lyricsDom = document.querySelector('.lyrics')
+
+const modal = document.querySelector('.modal')
+const loader = document.querySelector('.loader')
 const lyrics = document.querySelector('.lyrics')
 
 // Require
@@ -71,4 +87,86 @@ module.exports.fetchMethod = async (url, obj) => {
   const res = await resBrut.json()
 
   return { e: null, res }
+}
+
+module.exports.scrolling = scrolling = (type) => {
+  // Enable or disable scrolling
+  if (type !== 'stop')
+    return document.querySelector('body').classList.remove('stop-scrolling')
+  document.querySelector('body').classList.add('stop-scrolling')
+}
+
+module.exports.closeModal = closeModal = () => {
+  modal.classList.add('slide-out-bck-center')
+}
+
+module.exports.toggleLoadingDisplay = toggleLoadingDisplay = (isLoading) => {
+  isLoading
+    ? loader.classList.remove('u-display-none')
+    : loader.classList.add('u-display-none')
+}
+
+module.exports.toggleLoggedDisplay = toggleLoggedDisplay = (isLogged) => {
+  if (isLogged) {
+    bLoginDom.classList.add('u-display-none')
+    logoutContainerDom.classList.bLoginDom('u-display-none')
+  } else {
+    bLoginDom.classList.remove('u-display-none')
+    logoutContainerDom.classList.add('u-display-none')
+  }
+}
+
+module.exports.animateTitleDisplay = animateTitleDisplay = () => {
+  appTitleDom.classList.add('u-display-none')
+}
+
+module.exports.wizzLogButtonDisplay = wizzLogButtonDisplay = () => {
+  bLoginDom.classList.add('wobble-hor-bottom')
+  setTimeout(() => {
+    bLoginDom.classList.remove('wobble-hor-bottom')
+  }, 1000)
+}
+
+module.exports.animateTitleDisplay = animateTitleDisplay = () => {
+  appTitleDom.classList.add('u-display-none')
+}
+
+module.exports.logRequestDisplay = logRequestDisplay = (isLogged) => {
+  isLogged
+    ? logRequestDom.classList.add('u-display-none')
+    : logRequestDom.classList.remove('u-display-none')
+}
+
+module.exports.loggedWithoutMusicDisplay = loggedWithoutMusicDisplay = (
+  isLogged
+) => {
+  isLogged
+    ? loggedWithoutMusicDom.classList.add('u-display-none')
+    : loggedWithoutMusicDom.classList.remove('u-display-none')
+}
+
+module.exports.musicHeaderContainerEmptyDisplay = musicHeaderContainerEmptyDisplay = (
+  bool
+) => {
+  bool
+    ? musicHeaderContainerEmptyDom.classList.remove('u-display-none')
+    : musicHeaderContainerEmptyDom.classList.add('u-display-none')
+}
+
+module.exports.musicHeaderContainerDisplay = musicHeaderContainerDisplay = (
+  bool
+) => {
+  bool
+    ? musicHeaderContainerDom.classList.remove('u-display-none')
+    : musicHeaderContainerDom.classList.add('u-display-none')
+}
+
+module.exports.lyricsFoundDisplay = lyricsFoundDisplay = (bool) => {
+  if (bool) {
+    noLyricsFoundTextDom.classList.add('u-display-none')
+    lyricsDom.classList.remove('u-display-none')
+  } else {
+    noLyricsFoundTextDom.classList.remove('u-display-none')
+    lyricsDom.classList.add('u-display-none')
+  }
 }

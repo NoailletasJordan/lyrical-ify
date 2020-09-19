@@ -13,9 +13,10 @@ const storage = require('electron-json-storage')
 
 const { handleTokenReceived, logoutFromLocalStorage } = require('./utility')
 
-var client_id = process.env.CLIENT_ID // Your client id
-var redirect_uri = process.env.REDIRECT_URI // Your redirect uri
-var genius_token = process.env.GENIUS_TOKEN
+const client_id =  // Your client id
+const redirect_uri =  // Your redirect uri
+const genius_token =
+  
 let refresh_token = null
 let code_verifier = null
 
@@ -68,7 +69,7 @@ const createWindow = () => {
   mainWindow.loadFile(path.join(__dirname + '/renderer', 'index.html'))
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools()
+  //mainWindow.webContents.openDevTools()
 
   // Child Window (crawl lyrics)
   ipcMain.on('load-url', (event, url) => {
@@ -131,10 +132,15 @@ const createWindow = () => {
     console.log('html received -> hereishtml')
     //const removeTagsExeptBr = html.replace(/(<?b>|<?i>|<.?a>|<a.*?>)/gm, '')
     const removeLinks = html.replace(/(<a.*?>|<\/a>)/gm, '')
-    //const oneBrMax = removeTagsExeptBr.replace(/(<br*>){2,}/gm, '<br>')
-    //const BrBeforeBracket = oneBrMax.replace(/\[/gm, '<br>[')
 
-    mainWindow.webContents.send('reply-html', removeLinks)
+    //const oneBrMax = removeTagsExeptBr.replace(/(<br*>){2,}/gm, '<br>')
+    const addSpanBrackets1 = removeLinks.replace(
+      /\[/gm,
+      '<span class="lyrics-in-brackets">['
+    )
+    const addSpanBrackets2 = addSpanBrackets1.replace(/\]/gm, ']</span>')
+
+    mainWindow.webContents.send('reply-html', addSpanBrackets2)
   })
 
   ipcMain.on('code-verifier-created', (event, arg) => {
@@ -145,7 +151,7 @@ const createWindow = () => {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.disableHardwareAcceleration()
+//app.disableHardwareAcceleration()
 app.on('ready', createWindow)
 
 // Quit when all windows are closed, except on macOS. There, it's common
@@ -165,7 +171,7 @@ app.on('activate', () => {
   }
 })
 
-//require('update-electron-app')({ logger: require('electron-log') })
+require('update-electron-app')({ logger: require('electron-log') })
 
 /////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
