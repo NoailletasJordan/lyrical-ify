@@ -29,8 +29,8 @@ if (require('electron-squirrel-startup')) {
 const createWindow = () => {
   // Create the browser window.
   let mainWindowState = windowStateKeeper({
-    defaultWidth: 1000,
-    defaultHeight: 1000,
+    defaultWidth: 550,
+    defaultHeight: 700,
   })
 
   mainWindow = new BrowserWindow({
@@ -39,8 +39,7 @@ const createWindow = () => {
     width: mainWindowState.width,
     height: mainWindowState.height,
     minHeight: 500,
-    minWidth: 400,
-
+    minWidth: 500,
     webPreferences: { nodeIntegration: true },
   })
 
@@ -53,6 +52,8 @@ const createWindow = () => {
       offscreen: true,
     },
   })
+
+  mainWindowState.manage(mainWindow)
 
   serverWithWindowWrapper(mainWindow, childWindow)
 
@@ -82,21 +83,22 @@ const createWindow = () => {
     console.log('main did-finish-load')
 
     // Logic : if refresh_token found we API/refresh_token to get new one
-    // and if not found we ask for auth
-    // fnc can't be put in utility
+    // can't be put in utility.js
     const getFromLocalStorage = (mainWindow) => {
       storage.get('refresh_token', function (error, data) {
         if (error) throw error
         if (Object.keys(data).length === 0 && data.constructor === Object) {
           // refresh_token not found, ask for auth
           console.log('refresh_token not found')
-          return mainWindow.webContents.send('trigger-auth', null)
+          mainWindow.webContents.send('no-token-stored-display')
+          return //mainWindow.webContents.send('trigger-auth', null)
         }
         // refresh_token found
         console.log('refresh_token found : ' + data.refresh_token)
 
         // Update Refresh
         refresh_token = data.refresh_token
+        mainWindow.webContents.send('token-stored-display')
         mainWindow.webContents.send('trigger-refresh')
       })
     }
@@ -110,15 +112,15 @@ const createWindow = () => {
   })
 
   // Auto-update song on focus
-  /* mainWindow.on('focus', () => {
+  mainWindow.on('focus', () => {
     mainWindow.webContents.send('trigger-run-script')
     const inter = setInterval(() => {
       mainWindow.webContents.send('trigger-run-script')
-    }, 7000)
-    mainWindow.on('blur', () => {
+    }, 5000)
+    mainWindow.on('minimize', () => {
       clearInterval(inter)
     })
-  }) */
+  })
 
   // Ask html when child loaded
   childWindow.webContents.on('did-finish-load', function () {
@@ -130,6 +132,7 @@ const createWindow = () => {
     //childWindow.close()
     //childWindow = null
     console.log('html received -> hereishtml')
+
     //const removeTagsExeptBr = html.replace(/(<?b>|<?i>|<.?a>|<a.*?>)/gm, '')
     const removeLinks = html.replace(/(<a.*?>|<\/a>)/gm, '')
 
@@ -210,6 +213,9 @@ const serverWithWindowWrapper = (mainWindow) => {
           body.expires_in,
           mainWindow
         )
+
+        // Trigger dyplay changes
+        mainWindow.webContents.send('logged-success')
 
         // Close page
         res.redirect('/close.html')

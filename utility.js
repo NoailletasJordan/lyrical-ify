@@ -36,6 +36,6 @@ module.exports.logoutFromLocalStorage = logoutFromLocalStorage = () => {
 }
 
 // Remove storage
-storage.remove('refresh_token', function (error) {
+/* storage.remove('refresh_token', function (error) {
   if (error) throw error
-})
+}) */

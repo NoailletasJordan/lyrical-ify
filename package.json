@@ -1,7 +1,7 @@
 {
   "name": "lyrical-ify",
   "productName": "lyrical-ify",
-  "version": "0.1.0",
+  "version": "0.9.0",
   "description": "Get your currently playing music's lyrics",
   "main": "index.js",
   "repository": {
@@ -24,7 +24,9 @@
   "license": "MIT",
   "config": {
     "forge": {
-      "packagerConfig": {},
+      "packagerConfig": {
+        "icon": "./assets/favicon.ico"
+      },
       "publishers": [
         {
           "name": "@electron-forge/publisher-github",

@@ -13,13 +13,18 @@
   overflow: hidden;
 }
 
+.u-ml-4 {
+  margin-left: 4px;
+}
+
 body {
   font-family: 'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI',
     Roboto, Helvetica, Arial, sans-serif;
   background-color: #b1b1b1;
+  background-color: #fff;
 }
 
-.modal {
+.modal-start {
   position: absolute;
   height: 100vh;
   width: 100vw;
@@ -32,14 +37,42 @@ body {
   overflow: hidden;
 }
 
-.modal-text {
+.modal-browser {
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba($color: #000, $alpha: 0.2);
+  color: white;
+  overflow: hidden;
+}
+
+.modal-start-text {
   margin-left: 20px;
+}
+
+.modal-browser-block {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 500px;
+  height: 200px;
+  flex-grow: 1;
+  background-color: #222;
+  border-radius: 20px;
 }
 
 .u-df {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.u-grey {
+  color: #bbb;
 }
 
 .u-italic {
@@ -75,41 +108,10 @@ header {
   }
 }
 
-.login-button-hover,
-.logout-button-hover {
-  //border: white 2px solid;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 5px 8px;
-  border-radius: 12px;
-  transition: background-color 0.07s ease-in-out;
-
-  &:hover {
-    background-color: #151515;
-  }
-
-  &:active {
-    transform: translateY(1px);
-  }
-}
-
-.login-button {
-  cursor: pointer;
-  border: white 2px solid;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .logout-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  display: none;
 }
 
 .button-container {
@@ -152,14 +154,18 @@ header {
 }
 
 .music-album,
+.music-featuring,
 .music-artist {
   display: inline;
-  font-weight: bold;
+  //font-weight: bold;
   font-style: normal;
+  font-size: large;
+  color: white;
 }
 
 .log-request {
   text-align: center;
+  margin-bottom: 20px;
 }
 
 .logged-without-music {
@@ -222,9 +228,9 @@ body::-webkit-scrollbar-thumb {
 
 .slide-out-bck-center {
   -webkit-animation: slide-out-bck-center 0.5s
-    cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
+    cubic-bezier(0.55, 0.085, 0.68, 0.53) both 1s;
   animation: slide-out-bck-center 0.5s cubic-bezier(0.55, 0.085, 0.68, 0.53)
-    both;
+    both 1s;
 }
 
 @keyframes slide-out-bck-center {
@@ -239,23 +245,80 @@ body::-webkit-scrollbar-thumb {
     opacity: 0;
   }
 }
-/////////////////// Animations
 
-.tracking-in-expand {
-  -webkit-animation: tracking-in-expand 0.7s cubic-bezier(0.215, 0.61, 0.355, 1)
-    both;
-  animation: tracking-in-expand 1s cubic-bezier(0.215, 0.61, 0.355, 1) both;
+//////////////////// Imported
+
+// Button -imported
+
+.button-imported-log {
+  color: #fff;
+  cursor: pointer;
+  display: block;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 45px;
+  max-width: 160px;
+  position: relative;
+  text-decoration: none;
+  text-transform: uppercase;
+  width: 100%;
+  text-align: center;
+  transform: scale(0.8);
+  font-weight: 100;
+
+  svg {
+    height: 45px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+  }
+
+  rect {
+    fill: none;
+    stroke: #fff;
+    stroke-width: 2;
+    stroke-dasharray: 422, 0;
+    transition: all 0.35s linear;
+  }
+
+  &:hover {
+    text-decoration: none;
+
+    font-weight: 900;
+    letter-spacing: 1px;
+
+    rect {
+      stroke-width: 5;
+      stroke-dasharray: 15, 310;
+      stroke-dashoffset: 48;
+      transition: all 1.35s cubic-bezier(0.19, 1, 0.22, 1);
+    }
+  }
 }
 
-@keyframes tracking-in-expand {
+/////////////////// Animations
+
+.slide-in-elliptic-top-fwd {
+  -webkit-animation: slide-in-elliptic-top-fwd 0.7s
+    cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  animation: slide-in-elliptic-top-fwd 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+    both;
+}
+
+@keyframes slide-in-elliptic-top-fwd {
   0% {
-    letter-spacing: -0.5em;
+    -webkit-transform: translateY(-600px) rotateX(-30deg) scale(0);
+    transform: translateY(-600px) rotateX(-30deg) scale(0);
+    -webkit-transform-origin: 50% 100%;
+    transform-origin: 50% 100%;
     opacity: 0;
   }
-  40% {
-    opacity: 0.6;
-  }
   100% {
+    -webkit-transform: translateY(0) rotateX(0) scale(1);
+    transform: translateY(0) rotateX(0) scale(1);
+    -webkit-transform-origin: 50% 1400px;
+    transform-origin: 50% 1400px;
     opacity: 1;
   }
 }

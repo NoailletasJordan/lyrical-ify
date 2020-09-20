@@ -1,3 +1,4 @@
+// Require
 const { shell } = require('electron')
 var querystring = require('querystring')
 const { ipcRenderer } = require('electron/renderer')
@@ -5,6 +6,7 @@ const cryptoRandomString = require('crypto-random-string')
 const {
   fetchMethod,
   pkce_challenge_from_verifier,
+  modalBrowserDisplay,
 } = require('./utility-renderer')
 
 module.exports.authorize = authorize = async (client_id, redirect_uri) => {
@@ -33,6 +35,10 @@ module.exports.authorize = authorize = async (client_id, redirect_uri) => {
         code_challenge_method: 'S256',
       })
   )
+
+  // Show modal
+  modalBrowserDisplay(true)
+  toggleLoadingDisplay(false)
 
   // Send codeVerifier to main
   ipcRenderer.send('code-verifier-created', code_verifier)

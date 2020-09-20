@@ -3,75 +3,104 @@
   <head>
     <meta charset="UTF-8" />
     <title>Lyrical-ify</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Raleway:wght@300&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+      integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
+      crossorigin="anonymous"
+    />
     <link rel="stylesheet" href="./index.css" />
   </head>
   <body>
-      <div class="modal slide-out-bck-center">
-        
-        <img src="./Bean Eater-1s-101px.svg">
-        <div class="modal-text">Settings a couple on things</div>
+    <div class="modal-start">
+      <img src="../assets/Bean-Eater-1s-101px.svg" />
+      <div class="modal-start-text">Settings a couple on things</div>
+    </div>
+
+    <div class="modal-browser u-display-none">
+      <div class="modal-browser-block">
+        <img src="../assets/icons8-open-in-browser-45.png" alt="" />
+        <div class="modal-start-text">Accept permissions on your browser</div>
       </div>
-      
+    </div>
+
     <header>
-        <h1 >Lyrical-ify</h1>
-        <div class="loader u-display-none">
-            <div class="square-holder">
-              <div class="square"></div>
-          </div>
+      <h1>Lyrical-ify</h1>
+      <div class="loader u-display-none">
+        <div class="square-holder">
+          <div class="square"></div>
+        </div>
+      </div>
     </header>
     <div class="headband">
-        <div class="login-button-hover ">
-            <div class="login-button">
-                <i class="far fa-user"></i>
-            </div>
-        </div>
-        <div class="logout-container">
-            <div class="connected-as">
-                
-            </div>
-            <div class="logout-button-hover">
-                <div class="login-button">
-                    <i class="fas fa-sign-out-alt"></i>
-                </div>
-            </div>
-        </div>       
-    </div>
-      <div class="u-df">
-        <div class="music-header-container u-display-none ">
-            <img class="music-image" src=""></img>
-            <div>
-              <h2 class="music-title"></h2>
-              
-              <div class="u-italic" >by <div class="music-artist"></div></div>
-              <div class="u-italic">album <div class="music-album"></div></div>
-            </div>
-          </div>
+      <div class="login-button button-imported-log">
+        <svg>
+          <rect x="0" y="0" fill="none" width="100%" height="100%" />
+        </svg>
+        Login
       </div>
-  </div>
 
-  <div class="u-df">
-    <div class="music-header-container-empty">
-        <div class="log-request u-display-none">Hi friend!, log in so we get this started </div>
-        
-        <div class="logged-without-music u-display-none">I will print the lyrics as soon as you play a song</div>
+      <div class="logout-button button-imported-log u-display-none">
+        <svg>
+          <rect x="0" y="0" fill="none" width="100%" height="100%" />
+        </svg>
+        Logout
+      </div>
     </div>
-  </div>
-      
-      <div class='container'>
-          <div class="no-lyrics-found-text u-display-none">
-              Hum... this is awkward but... it looks like i coudn't find the lyrics of this song. Sorry about that. 😕
+    <div class="u-df">
+      <div class="music-header-container u-display-none">
+        <img class="music-image" src="" />
+        <div>
+          <h2 class="music-title"></h2>
+
+          <div class="u-italic u-grey">
+            by
+            <div class="music-artist u-ml-4"></div>
           </div>
-          
-          
-            
-        <div class="lyrics">
-           
+          <div class="u-italic u-grey">
+            featuring
+            <div class="music-featuring u-ml-4"></div>
+          </div>
+          <div class="u-italic u-grey">
+            album
+            <div class="music-album u-ml-4"></div>
+          </div>
         </div>
       </div>
+    </div>
+
+    <div class="u-df">
+      <div class="music-header-container-empty">
+        <div class="log-request u-display-none">
+          Hi friend!, log in so we get this started
+        </div>
+
+        <div class="logged-without-music">
+          I will search the lyrics as soon as you play a song
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="no-lyrics-found-text u-display-none">
+        Hum... this is awkward but... it looks like i coudn't find the lyrics of
+        this song. Sorry about that. 😕
+      </div>
+
+      <div class="lyrics"></div>
+    </div>
   </body>
 
   <script>

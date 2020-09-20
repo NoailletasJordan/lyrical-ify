@@ -1,13 +1,24 @@
 // Renderer
 // Dom
-const bLoginDom = document.querySelector('.login-button-hover')
-const bLogoutDom = document.querySelector('.logout-button-hover')
+const bLoginDom = document.querySelector('.login-button')
+const bLogoutDom = document.querySelector('.logout-button')
 const lyricsDom = document.querySelector('.lyrics')
 
 // Require
 
 const { ipcRenderer } = require('electron/renderer')
-const { removeDisplay } = require('./utility-renderer')
+const {
+  removeLyricsDisplay,
+  scrolling,
+  toggleLoadingDisplay,
+  toggleLoggedDisplay,
+  animateTitleDisplay,
+  wizzLogButtonDisplay,
+  musicHeaderContainerDisplay,
+  logRequestDisplay,
+  closeStartModalDisplay,
+  modalBrowserDisplay,
+} = require('./utility-renderer')
 
 const { authorize, refreshTheToken } = require('./auth')
 const { runSpotifyAndGenius } = require('./current-music')
@@ -29,7 +40,7 @@ bLoginDom.addEventListener('click', () => {
 
 // search music
 /* b3.addEventListener('click', () => {
-  musicState = runSpotifyAndGenius(access_token, genius_token, musicState)
+  musicState = async runSpotifyAndGenius(access_token, genius_token, musicState)
 }) */
 
 // Logout
@@ -48,8 +59,12 @@ ipcRenderer.on('trigger-auth', (e, args) => {
 })
 
 // trigger refresh
-ipcRenderer.on('trigger-refresh', (e, refr) => {
-  access_token = refreshTheToken()
+ipcRenderer.on('trigger-refresh', async (e, refr) => {
+  access_token = await refreshTheToken()
+  console.log('ref ipc', access_token)
+  // Close modal if it wasnt already
+  closeStartModalDisplay()
+  animateTitleDisplay()
 })
 
 // Extract the tokens
@@ -67,21 +82,22 @@ ipcRenderer.on('update-variable', (e, args) => {
 // Add the lyrics into html
 ipcRenderer.on('reply-html', (e, html) => {
   console.log('reply-html')
-  lyricsDom.innerHTML = html
+  toggleLoadingDisplay(false)
+  lyricsFoundDisplay(true, html)
 })
 
 // trigger runSpotifyAndGenius
-ipcRenderer.on('trigger-run-script', () => {
-  runSpotifyAndGenius(access_token, genius_token, musicState)
+ipcRenderer.on('trigger-run-script', async () => {
+  musicState = await runSpotifyAndGenius(access_token, genius_token, musicState)
 })
 
 // Reniew token when expire
 ipcRenderer.on('token-expire', (event, sec) => {
   console.log('token will be reniewed in', sec, 'seconds')
   // Right before the
-  tokenTimerExpire = setTimeout(() => {
+  tokenTimerExpire = setTimeout(async () => {
     console.log('token expired, asking for a new one')
-    access_token = refreshTheToken()
+    access_token = await refreshTheToken()
   }, sec * 900)
 })
 
@@ -91,8 +107,34 @@ ipcRenderer.on('mess', (e, arg) => {
 
 // Logout - Cant be imported
 const handleLogout = () => {
-  removeDisplay()
+  removeLyricsDisplay()
   ipcRenderer.send('logout')
   access_token = null
   clearInterval(tokenTimerExpire)
+
+  // Display
+  logRequestDisplay(true)
+  toggleLoggedDisplay(false)
+  musicHeaderContainerDisplay(false)
 }
+
+// Display IPC
+ipcRenderer.on('no-token-stored-display', () => {
+  closeStartModalDisplay()
+  animateTitleDisplay()
+  logRequestDisplay(true)
+})
+
+ipcRenderer.on('token-stored-display', () => {
+  closeStartModalDisplay()
+  logRequestDisplay(false)
+  toggleLoggedDisplay(true)
+})
+
+ipcRenderer.on('logged-success', () => {
+  // close modal
+  modalBrowserDisplay(false)
+  logRequestDisplay(false)
+  toggleLoggedDisplay(true)
+  toggleLoadingDisplay(false)
+})

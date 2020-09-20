@@ -2,7 +2,11 @@
 var querystring = require('querystring')
 const { ipcRenderer } = require('electron/renderer')
 
-const { fetchMethod, updateDisplay } = require('./utility-renderer')
+const {
+  fetchMethod,
+  updateHeaderContainerDisplay,
+  musicHeaderContainerDisplay,
+} = require('./utility-renderer')
 
 const getCurrentMusicInfos = async (access_token) => {
   if (!access_token) return console.log('access_token null')
@@ -30,22 +34,49 @@ const getCurrentMusicInfos = async (access_token) => {
     return null
   }
 
-  return {
+  // OK
+
+  // Get all artists string with separated by ', '
+  let allArtists = ''
+  data.res.item.artists.forEach((elem) => {
+    allArtists = allArtists + ' ' + elem.name
+  })
+  allArtists = allArtists.slice(1)
+  console.log(allArtists)
+
+  // Get all featuring string with separated by ', '
+  let featuring = []
+  data.res.item.artists.forEach((elem) => {
+    featuring.push(elem.name)
+  })
+  featuring.shift()
+  featuring = featuring.join(', ')
+
+  const currentMusic = {
     name: data.res.item.name,
     artist: data.res.item.artists[0].name,
     album: data.res.item.album.name,
     image: data.res.item.album.images[1].url,
+    allArtists,
+    featuring,
   }
+
+  // Updating display
+  updateHeaderContainerDisplay(currentMusic)
+  musicHeaderContainerDisplay(true)
+
+  return currentMusic
 }
 
-const getUrlFromGenius = async (name, artist, genius_token) => {
+const getUrlFromGenius = async (name, artist, allArtists, genius_token) => {
   if (!genius_token) return console.log('error no genius_token')
 
-  console.log('geturlfromgenius : ', name, artist)
+  console.log('geturlfromgenius : ', name, allArtists)
 
+  // Remove also the content of parenthesis
   const nameMinusParentheses = name.replace(/\(.*?\)/gm, '')
 
-  console.log('query : ' + nameMinusParentheses + ' ' + artist)
+  console.log('query : ' + nameMinusParentheses + ' ' + allArtists)
 
   const option = {
     headers: {
@@ -55,7 +86,7 @@ const getUrlFromGenius = async (name, artist, genius_token) => {
   const fetchUrl =
     'https://api.genius.com/search?' +
     querystring.stringify({
-      q: `${nameMinusParentheses} ${artist}`,
+      q: `${nameMinusParentheses} ${allArtists}`,
     })
 
   const data = await fetchMethod(fetchUrl, option)
@@ -86,23 +117,24 @@ module.exports.runSpotifyAndGenius = runSpotifyAndGenius = async (
   const currentMusic = await getCurrentMusicInfos(access_token)
 
   // Return if no music playing
-  if (!currentMusic) return
+  if (!currentMusic) return null
 
-  // Crawl if new music
-  if (musicState === currentMusic.name)
-    return console.log('Curent music, prevent crawling')
+  // Return is same music
+  if (musicState === currentMusic.name) {
+    console.log('Curent music, prevent crawling')
+    return currentMusic.name
+  }
 
   // Get url and  thumbnail from genius
   const { url } = await getUrlFromGenius(
     currentMusic.name,
     currentMusic.artist,
+    currentMusic.allArtists,
     genius_token
   )
 
-  // Update html from spotify infos
-  updateDisplay(currentMusic)
-
-  // Send url to main
+  // Send url to to crawl
+  toggleLoadingDisplay(true)
   ipcRenderer.send('load-url', url)
   console.log(url)
 
