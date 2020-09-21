@@ -29,7 +29,7 @@ let client_id = null
 let redirect_uri = null
 let genius_token = null
 let access_token = null
-let musicState = null
+let musicState = ' '
 let tokenTimerExpire = null
 
 // Listeners
@@ -107,12 +107,12 @@ ipcRenderer.on('mess', (e, arg) => {
 
 // Logout - Cant be imported
 const handleLogout = () => {
-  removeLyricsDisplay()
   ipcRenderer.send('logout')
   access_token = null
   clearInterval(tokenTimerExpire)
 
   // Display
+  //removeLyricsDisplay()
   logRequestDisplay(true)
   toggleLoggedDisplay(false)
   musicHeaderContainerDisplay(false)

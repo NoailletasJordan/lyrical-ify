@@ -1,7 +1,7 @@
 {
   "name": "lyrical-ify",
   "productName": "lyrical-ify",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "description": "Get your currently playing music's lyrics",
   "main": "index.js",
   "repository": {
@@ -18,7 +18,7 @@
   },
   "keywords": [],
   "author": {
-    "name": "jordan Noailletas",
+    "name": "Jordan Noailletas",
     "email": "j.noailletas@gmail.com"
   },
   "license": "MIT",

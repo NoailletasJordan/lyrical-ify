@@ -1,4 +1,4 @@
-const { app, BrowserWindow, session } = require('electron')
+const { app, BrowserWindow, session, Menu } = require('electron')
 require('dotenv').config()
 const path = require('path')
 const windowStateKeeper = require('electron-window-state')
@@ -40,6 +40,7 @@ const createWindow = () => {
     height: mainWindowState.height,
     minHeight: 500,
     minWidth: 500,
+    icon: path.join(__dirname + '\\assets/favicon-32x32.png'),
     webPreferences: { nodeIntegration: true },
   })
 
@@ -64,6 +65,13 @@ const createWindow = () => {
       redirect_uri,
       genius_token,
     })
+  })
+
+  // Create right-click menu
+  let contextMenu = Menu.buildFromTemplate([{ role: 'copy' }])
+
+  mainWindow.webContents.on('context-menu', (e) => {
+    contextMenu.popup()
   })
 
   // and load the index.html of the app.
@@ -112,15 +120,15 @@ const createWindow = () => {
   })
 
   // Auto-update song on focus
-  mainWindow.on('focus', () => {
-    mainWindow.webContents.send('trigger-run-script')
-    const inter = setInterval(() => {
+  let inter = null
+  const intervalManager = () => {
+    if (!mainWindow.isMinimized()) {
       mainWindow.webContents.send('trigger-run-script')
-    }, 5000)
-    mainWindow.on('minimize', () => {
-      clearInterval(inter)
-    })
-  })
+    } else clearInterval(inter)
+  }
+  setInterval(() => {
+    intervalManager()
+  }, 5000)
 
   // Ask html when child loaded
   childWindow.webContents.on('did-finish-load', function () {

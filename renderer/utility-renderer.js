@@ -23,8 +23,13 @@ const modal = document.querySelector('.modal')
 const loader = document.querySelector('.loader')
 const lyrics = document.querySelector('.lyrics')
 const modalBrowserBlock = document.querySelector('.modal-browser-block')
+const musicFeaturingContainer = document.querySelector(
+  '.music-featuring-container'
+)
 
 // Require
+var querystring = require('querystring')
+const { start } = require('repl')
 
 function sha256(plain) {
   // returns promise ArrayBuffer
@@ -62,6 +67,9 @@ const updateHeaderContainerDisplay = (currentMusic) => {
   musicArtistDom.innerHTML = currentMusic.artist
   musicAlbumDom.innerHTML = currentMusic.album
   musicFeaturingDom.innerHTML = currentMusic.featuring
+  currentMusic.featuring
+    ? musicFeaturingContainer.classList.remove('u-display-none')
+    : musicFeaturingContainer.classList.add('u-display-none')
 }
 module.exports.updateHeaderContainerDisplay = updateHeaderContainerDisplay
 
@@ -77,7 +85,7 @@ const removeLyricsDisplay = () => {
 module.exports.removeLyricsDisplay = removeLyricsDisplay
 
 // FETCH METHOD
-module.exports.fetchMethod = async (url, obj) => {
+const fetchMethod = async (url, obj) => {
   const resBrut = await fetch(url, obj)
 
   console.log(resBrut.status)
@@ -95,6 +103,123 @@ module.exports.fetchMethod = async (url, obj) => {
 
   return { e: null, res }
 }
+module.exports.fetchMethod = fetchMethod
+
+module.exports.urlChecker = urlChecker = async (
+  option,
+  startingUrl,
+  artist,
+  nameCutPastParenthesis,
+  nameBrut
+) => {
+  const listOfBannedWords = [
+    'top-hits',
+    'traduccion-al',
+    'traducao',
+    'turkce-ceviri',
+    'ubersetzungen',
+    'traduction-francaise',
+    'nederlandse-vertaling',
+    'deutsche-ubersetzung',
+    'russian-translations',
+    'annotated',
+    'english-translation',
+    'genius-users',
+    'summer-playlist',
+  ]
+
+  const urlIsOk = (listOfBannedWords) => {
+    let valueReturned = true
+    listOfBannedWords.forEach((word) => {
+      startingUrl.includes(word) ? (valueReturned = false) : null
+    })
+
+    if (!startingUrl.includes('lyrics')) valueReturned = false
+
+    // settings if is a remix
+    if (
+      nameBrut.toLowerCase().includes('remix') &&
+      !startingUrl.toLowerCase().includes('remix')
+    )
+      valueReturned = false
+
+    if (
+      !nameBrut.toLowerCase().includes('remix') &&
+      startingUrl.toLowerCase().includes('remix')
+    ) {
+      valueReturned = false
+    }
+
+    if (
+      // url do not contains artist name
+      !startingUrl
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/ +/gm, '-')
+        .toLowerCase()
+        .includes(
+          artist
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .replace(/ +/gm, '-')
+            .toLowerCase()
+        )
+    )
+      valueReturned = false
+
+    return valueReturned
+  }
+
+  if (urlIsOk(listOfBannedWords)) {
+    // OK
+    console.log('url checked: true')
+    return startingUrl
+  } else {
+    console.log('url checked: false')
+    // Bad url, try new query with artist 1 only
+    const fetchUrl =
+      'https://api.genius.com/search?' +
+      querystring.stringify({
+        q: `${nameCutPastParenthesis} ${artist}`,
+      })
+    console.log('url from checker', fetchUrl)
+    const data = await fetchMethod(fetchUrl, option)
+
+    if (!data.res.response.hits.length) {
+      // Didnt find any song
+      url = ''
+    } else {
+      // OK - Extract url
+      url = data.res.response.hits[0].result.url || ''
+    }
+
+    // Genius didn't found the track
+
+    if (
+      data.e ||
+      data.res.response.hits.length === 0 ||
+      !url.includes('lyrics') ||
+      // url do not contain artist name
+      !url
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/ +/gm, '-')
+        .toLowerCase()
+        .includes(
+          artist
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .replace(/ +/gm, '-')
+            .toLowerCase()
+        )
+    ) {
+      return null
+    }
+
+    // OK
+    return url
+  }
+}
 
 const scrolling = (bool) => {
   // Enable or disable scrolling
@@ -102,7 +227,6 @@ const scrolling = (bool) => {
     return document.querySelector('body').classList.remove('stop-scrolling')
   document.querySelector('body').classList.add('stop-scrolling')
 }
-
 module.exports.closeModal = closeModal = () => {
   modal.classList.add('slide-out-bck-center')
 }

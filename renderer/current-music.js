@@ -6,6 +6,8 @@ const {
   fetchMethod,
   updateHeaderContainerDisplay,
   musicHeaderContainerDisplay,
+  urlChecker,
+  lyricsFoundDisplay,
 } = require('./utility-renderer')
 
 const getCurrentMusicInfos = async (access_token) => {
@@ -36,13 +38,18 @@ const getCurrentMusicInfos = async (access_token) => {
 
   // OK
 
-  // Get all artists string with separated by ', '
+  // Get allArtists and artistsMax2 string with separated by ' '
   let allArtists = ''
   data.res.item.artists.forEach((elem) => {
     allArtists = allArtists + ' ' + elem.name
   })
   allArtists = allArtists.slice(1)
   console.log(allArtists)
+
+  let artistsMax2 = ''
+  for (let i = 0; i < data.res.item.artists.length; i++) {
+    if (i <= 1) artistsMax2 = artistsMax2 + ' ' + data.res.item.artists[i].name
+  }
 
   // Get all featuring string with separated by ', '
   let featuring = []
@@ -58,6 +65,7 @@ const getCurrentMusicInfos = async (access_token) => {
     album: data.res.item.album.name,
     image: data.res.item.album.images[1].url,
     allArtists,
+    artistsMax2,
     featuring,
   }
 
@@ -68,16 +76,26 @@ const getCurrentMusicInfos = async (access_token) => {
   return currentMusic
 }
 
-const getUrlFromGenius = async (name, artist, allArtists, genius_token) => {
+const getUrlFromGenius = async (name, artist, artistsMax2, genius_token) => {
   if (!genius_token) return console.log('error no genius_token')
 
-  console.log('geturlfromgenius : ', name, allArtists)
+  // Format the name for the query
+  let nameCutPastParenthesis = name
+  if (name.includes('(')) {
+    nameCutPastParenthesis = Array.from(nameCutPastParenthesis)
+    const index = nameCutPastParenthesis.findIndex((r) => r === '(')
+    nameCutPastParenthesis = nameCutPastParenthesis.splice(0, index).join('')
+  }
+  // Add 'remix' to name if cropped
+  if (
+    name.toLowerCase().includes('remix') &&
+    !nameCutPastParenthesis.toLowerCase().includes('remix')
+  )
+    nameCutPastParenthesis = nameCutPastParenthesis + ' remix'
 
-  // Remove also the content of parenthesis
-  const nameMinusParentheses = name.replace(/\(.*?\)/gm, '')
+  console.log(name.toLowerCase())
 
-  console.log('query : ' + nameMinusParentheses + ' ' + allArtists)
-
+  // Set up query search
   const option = {
     headers: {
       Authorization: 'Bearer ' + genius_token,
@@ -86,23 +104,44 @@ const getUrlFromGenius = async (name, artist, allArtists, genius_token) => {
   const fetchUrl =
     'https://api.genius.com/search?' +
     querystring.stringify({
-      q: `${nameMinusParentheses} ${allArtists}`,
+      q: `${nameCutPastParenthesis} ${artistsMax2}`,
     })
+  console.log('fetchUL :', fetchUrl)
 
+  // Fetch genius
   const data = await fetchMethod(fetchUrl, option)
 
-  //error
-  if (data.e) return console.log('error : ' + data.e)
-
-  if (data.res.response.hits.length === 0) {
-    // Genius didn't found the track
+  // Error - handled later
+  if (data.e) {
     return console.log("Sorry we could't get this tracks lyrics ...")
   }
 
-  return {
-    url: data.res.response.hits[0].result.url,
-    thumbnail: data.res.response.hits[0].result.song_art_image_thumbnail_url,
+  let url
+  if (!data.res.response.hits.length) {
+    // Didnt find any song
+    url = ''
+  } else {
+    // OK - Song Finded
+    url = data.res.response.hits[0].result.url
   }
+
+  // Check url
+  const urlChecked = await urlChecker(
+    option,
+    url,
+    artist,
+    nameCutPastParenthesis,
+    name
+  )
+
+  // Bad Url - handled later
+  if (!urlChecked) {
+    console.log("Sorry we could't get this tracks lyrics ...")
+    return null
+  }
+
+  // OK
+  return urlChecked
 }
 
 module.exports.runSpotifyAndGenius = runSpotifyAndGenius = async (
@@ -120,18 +159,25 @@ module.exports.runSpotifyAndGenius = runSpotifyAndGenius = async (
   if (!currentMusic) return null
 
   // Return is same music
-  if (musicState === currentMusic.name) {
-    console.log('Curent music, prevent crawling')
+  if (musicState === currentMusic.name || !musicState) {
+    console.log('Same music, prevent crawling')
     return currentMusic.name
   }
 
   // Get url and  thumbnail from genius
-  const { url } = await getUrlFromGenius(
+  const url = await getUrlFromGenius(
     currentMusic.name,
     currentMusic.artist,
-    currentMusic.allArtists,
+    currentMusic.artistsMax2,
     genius_token
   )
+
+  // Can't get the url
+  if (!url) {
+    console.log('runSpot =====>', url)
+    lyricsFoundDisplay(false)
+    return currentMusic.name
+  }
 
   // Send url to to crawl
   toggleLoadingDisplay(true)
