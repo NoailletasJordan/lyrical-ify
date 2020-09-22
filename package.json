@@ -1,7 +1,7 @@
 {
   "name": "lyrical-ify",
   "productName": "lyrical-ify",
-  "version": "0.10.0",
+  "version": "0.10.4",
   "description": "Get your currently playing music's lyrics",
   "main": "index.js",
   "repository": {
@@ -9,7 +9,7 @@
     "url": "https://github.com/NoailletasJordan/lirical-ify/"
   },
   "scripts": {
-    "start": "electron-forge start",
+    "start": "concurrently \"electron-forge start\" \"sass --watch ./renderer/index.scss ./renderer/index.css\" ",
     "w": "concurrently \"nodemon --exec electron-forge start .\" \"sass --watch ./renderer/index.scss ./renderer/index.css\"",
     "package": "electron-forge package",
     "make": "electron-forge make",

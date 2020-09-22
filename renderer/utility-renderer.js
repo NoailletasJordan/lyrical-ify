@@ -73,17 +73,6 @@ const updateHeaderContainerDisplay = (currentMusic) => {
 }
 module.exports.updateHeaderContainerDisplay = updateHeaderContainerDisplay
 
-// remove lyrics state
-const removeLyricsDisplay = () => {
-  musicImageDom.src = null
-  musicImageDom.style.opacity = 0
-  musicTitleDom.innerHTML = null
-  musicAlbumDom.innerHTML = null
-  musicArtistDom.innerHTML = null
-  lyrics.innerHTML = null
-}
-module.exports.removeLyricsDisplay = removeLyricsDisplay
-
 // FETCH METHOD
 const fetchMethod = async (url, obj) => {
   const resBrut = await fetch(url, obj)
@@ -100,7 +89,6 @@ const fetchMethod = async (url, obj) => {
 
   // OK
   const res = await resBrut.json()
-
   return { e: null, res }
 }
 module.exports.fetchMethod = fetchMethod
@@ -126,12 +114,16 @@ module.exports.urlChecker = urlChecker = async (
     'english-translation',
     'genius-users',
     'summer-playlist',
+    'tracklist',
+    'spotify',
   ]
 
   const urlIsOk = (listOfBannedWords) => {
     let valueReturned = true
     listOfBannedWords.forEach((word) => {
-      startingUrl.includes(word) ? (valueReturned = false) : null
+      startingUrl.toLowerCase().includes(word.toLowerCase())
+        ? (valueReturned = false)
+        : null
     })
 
     if (!startingUrl.includes('lyrics')) valueReturned = false
@@ -150,22 +142,34 @@ module.exports.urlChecker = urlChecker = async (
       valueReturned = false
     }
 
-    if (
-      // url do not contains artist name
-      !startingUrl
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .replace(/ +/gm, '-')
-        .toLowerCase()
-        .includes(
-          artist
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-            .replace(/ +/gm, '-')
-            .toLowerCase()
-        )
-    )
-      valueReturned = false
+    // Skip artist name verification if contains "$"
+    if (!artist.includes('$')) {
+      if (
+        // url do not contains artist name
+        !startingUrl
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .replace(/ +/gm, '-')
+          .replace(/'/g, '')
+          .replace(/"/g, '')
+          .replace(/\./gm, '')
+          .replace(/&/gm, 'and')
+
+          .toLowerCase()
+          .includes(
+            artist
+              .normalize('NFD')
+              .replace(/[\u0300-\u036f]/g, '')
+              .replace(/ +/gm, '-')
+              .replace(/'/g, '')
+              .replace(/"/g, '')
+              .replace(/\./gm, '')
+              .replace(/&/gm, 'and')
+              .toLowerCase()
+          )
+      )
+        valueReturned = false
+    }
 
     return valueReturned
   }
@@ -194,24 +198,37 @@ module.exports.urlChecker = urlChecker = async (
     }
 
     // Genius didn't found the track
-
+    // Skip artist name verification if contains "$"
+    if (!artist.includes('$')) {
+      if (
+        // url do not contain artist name
+        !url
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .replace(/ +/gm, '-')
+          .replace(/'/g, '')
+          .replace(/"/g, '')
+          .replace(/\./gm, '')
+          .replace(/&/gm, 'and')
+          .toLowerCase()
+          .includes(
+            artist
+              .normalize('NFD')
+              .replace(/[\u0300-\u036f]/g, '')
+              .replace(/ +/gm, '-')
+              .replace(/'/g, '')
+              .replace(/"/g, '')
+              .replace(/\./gm, '')
+              .replace(/&/gm, 'and')
+              .toLowerCase()
+          )
+      )
+        return null
+    }
     if (
       data.e ||
       data.res.response.hits.length === 0 ||
-      !url.includes('lyrics') ||
-      // url do not contain artist name
-      !url
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .replace(/ +/gm, '-')
-        .toLowerCase()
-        .includes(
-          artist
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-            .replace(/ +/gm, '-')
-            .toLowerCase()
-        )
+      !url.includes('lyrics')
     ) {
       return null
     }
@@ -309,4 +326,8 @@ module.exports.modalBrowserDisplay = modalBrowserDisplay = (bool) => {
     modalBrowserDom.classList.add('u-display-none')
     scrolling(true)
   }
+}
+
+module.exports.removeLyricsDisplay = removeLyricsDisplay = () => {
+  lyricsDom.innerHTML = null
 }

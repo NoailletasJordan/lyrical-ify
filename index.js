@@ -274,8 +274,8 @@ const serverWithWindowWrapper = (mainWindow) => {
     })
   })
 
-  console.log('Listening on 8888')
-  server.listen(8888)
+  console.log('Listening on 54860')
+  server.listen(54860)
 }
 
 //////////////////////////////////////////////////////////////////////////////

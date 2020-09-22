@@ -45,7 +45,7 @@ module.exports.authorize = authorize = async (client_id, redirect_uri) => {
 }
 
 module.exports.refreshTheToken = refreshTheToken = async () => {
-  const fetchUrl = 'http://localhost:8888/refresh_token?'
+  const fetchUrl = 'http://localhost:54860/refresh_token?'
 
   const data = await fetchMethod(fetchUrl)
 

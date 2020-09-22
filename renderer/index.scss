@@ -166,6 +166,7 @@ header {
 .log-request {
   text-align: center;
   margin-bottom: 20px;
+  color: #1db954;
 }
 
 .logged-without-music {
@@ -204,10 +205,11 @@ body::-webkit-scrollbar-thumb {
   height: 7px;
   border-radius: 4px;
   background-color: #fff;
+  border: 1px solid black;
 }
 
 .loader {
-  position: absolute;
+  position: fixed;
   .square {
     animation: loadingG 1.2s cubic-bezier(0.17, 0.37, 0.43, 0.67) infinite;
   }
@@ -265,7 +267,7 @@ body::-webkit-scrollbar-thumb {
   text-align: center;
   transform: scale(0.8);
   font-weight: 100;
-
+  background-color: #1db954;
   svg {
     height: 45px;
     left: 0;
@@ -295,6 +297,10 @@ body::-webkit-scrollbar-thumb {
       transition: all 1.35s cubic-bezier(0.19, 1, 0.22, 1);
     }
   }
+}
+
+.logout-button {
+  background-color: transparent;
 }
 
 /////////////////// Animations

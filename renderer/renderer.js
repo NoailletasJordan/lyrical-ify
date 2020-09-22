@@ -2,18 +2,14 @@
 // Dom
 const bLoginDom = document.querySelector('.login-button')
 const bLogoutDom = document.querySelector('.logout-button')
-const lyricsDom = document.querySelector('.lyrics')
 
 // Require
 
 const { ipcRenderer } = require('electron/renderer')
 const {
-  removeLyricsDisplay,
-  scrolling,
   toggleLoadingDisplay,
   toggleLoggedDisplay,
   animateTitleDisplay,
-  wizzLogButtonDisplay,
   musicHeaderContainerDisplay,
   logRequestDisplay,
   closeStartModalDisplay,
@@ -29,7 +25,7 @@ let client_id = null
 let redirect_uri = null
 let genius_token = null
 let access_token = null
-let musicState = ' '
+let musicState = '_'
 let tokenTimerExpire = null
 
 // Listeners
@@ -88,7 +84,12 @@ ipcRenderer.on('reply-html', (e, html) => {
 
 // trigger runSpotifyAndGenius
 ipcRenderer.on('trigger-run-script', async () => {
-  musicState = await runSpotifyAndGenius(access_token, genius_token, musicState)
+  if (access_token)
+    musicState = await runSpotifyAndGenius(
+      access_token,
+      genius_token,
+      musicState
+    )
 })
 
 // Reniew token when expire
@@ -110,9 +111,10 @@ const handleLogout = () => {
   ipcRenderer.send('logout')
   access_token = null
   clearInterval(tokenTimerExpire)
+  musicState = '_'
 
   // Display
-  //removeLyricsDisplay()
+  removeLyricsDisplay()
   logRequestDisplay(true)
   toggleLoggedDisplay(false)
   musicHeaderContainerDisplay(false)

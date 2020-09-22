@@ -162,6 +162,7 @@ header {
 .log-request {
   text-align: center;
   margin-bottom: 20px;
+  color: #1db954;
 }
 
 .logged-without-music {
@@ -198,10 +199,11 @@ body::-webkit-scrollbar-thumb {
   height: 7px;
   border-radius: 4px;
   background-color: #fff;
+  border: 1px solid black;
 }
 
 .loader {
-  position: absolute;
+  position: fixed;
   right: 70px;
 }
 .loader .square {
@@ -251,6 +253,7 @@ body::-webkit-scrollbar-thumb {
   text-align: center;
   transform: scale(0.8);
   font-weight: 100;
+  background-color: #1db954;
 }
 .button-imported-log svg {
   height: 45px;
@@ -276,6 +279,10 @@ body::-webkit-scrollbar-thumb {
   stroke-dasharray: 15, 310;
   stroke-dashoffset: 48;
   transition: all 1.35s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.logout-button {
+  background-color: transparent;
 }
 
 .slide-in-elliptic-top-fwd {
