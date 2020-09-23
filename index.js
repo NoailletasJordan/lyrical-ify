@@ -1,4 +1,4 @@
-const { app, BrowserWindow, session, Menu } = require('electron')
+const { app, BrowserWindow, Menu } = require('electron')
 require('dotenv').config()
 const path = require('path')
 const windowStateKeeper = require('electron-window-state')

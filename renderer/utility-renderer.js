@@ -29,7 +29,6 @@ const musicFeaturingContainer = document.querySelector(
 
 // Require
 var querystring = require('querystring')
-const { start } = require('repl')
 
 function sha256(plain) {
   // returns promise ArrayBuffer
@@ -83,8 +82,8 @@ const fetchMethod = async (url, obj) => {
     return { e: { status: resBrut.status }, res: null }
   } else if (resBrut.status >= 400) {
     // Error 400+
-    console.log('Error ' + resBrut.status, res)
-    return { e: { status: resBrut.status }, res: null }
+    console.log('Error ' + resBrut.status)
+    return { e: { status: resBrut.status } }
   }
 
   // OK

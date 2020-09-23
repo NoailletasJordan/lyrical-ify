@@ -159,7 +159,7 @@ module.exports.runSpotifyAndGenius = runSpotifyAndGenius = async (
   if (!currentMusic) return null
 
   // Return is same music
-  if (musicState === currentMusic.name || !musicState) {
+  if (musicState === currentMusic.name) {
     console.log('Same music, prevent crawling')
     return currentMusic.name
   }
