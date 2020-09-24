@@ -1,7 +1,7 @@
 {
   "name": "lyrical-ify",
   "productName": "lyrical-ify",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Get your currently playing music's lyrics",
   "main": "index.js",
   "repository": {

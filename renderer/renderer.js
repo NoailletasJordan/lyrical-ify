@@ -18,7 +18,6 @@ const {
 
 const { authorize, refreshTheToken } = require('./auth')
 const { runSpotifyAndGenius } = require('./current-music')
-console.log('debug 3')
 
 // Variables
 let client_id = null
@@ -57,6 +56,7 @@ ipcRenderer.on('trigger-auth', (e, args) => {
 // trigger refresh
 ipcRenderer.on('trigger-refresh', async (e, refr) => {
   access_token = await refreshTheToken()
+  if (!access_token) handleLogout()
   console.log('ref ipc', access_token)
   // Close modal if it wasnt already
   closeStartModalDisplay()
@@ -100,10 +100,6 @@ ipcRenderer.on('token-expire', (event, sec) => {
     console.log('token expired, asking for a new one')
     access_token = await refreshTheToken()
   }, sec * 900)
-})
-
-ipcRenderer.on('mess', (e, arg) => {
-  console.log(arg)
 })
 
 // Logout - Cant be imported

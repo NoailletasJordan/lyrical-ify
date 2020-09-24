@@ -50,7 +50,7 @@ module.exports.refreshTheToken = refreshTheToken = async () => {
   const data = await fetchMethod(fetchUrl)
 
   //error
-  if (data.e) return
+  if (data.e) return null
 
   console.log('refresh : ' + data.res.access_token)
   return data.res.access_token

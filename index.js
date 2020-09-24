@@ -90,6 +90,7 @@ const createWindow = () => {
   // Ask html when main loaded
   mainWindow.webContents.on('did-finish-load', function () {
     console.log('main did-finish-load')
+    mainWindow.webContents.send('mess', 'App version ' + app.getVersion())
 
     // Logic : if refresh_token found we API/refresh_token to get new one
     // can't be put in utility.js
@@ -123,7 +124,7 @@ const createWindow = () => {
   // Auto-update song on focus
   let inter = null
   const intervalManager = () => {
-    if (!mainWindow.isMinimized()) {
+    if (!mainWindow.isMinimized() && mainWindow) {
       mainWindow.webContents.send('trigger-run-script')
     } else clearInterval(inter)
   }
@@ -163,7 +164,7 @@ const createWindow = () => {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-//app.disableHardwareAcceleration()
+app.disableHardwareAcceleration()
 app.on('ready', createWindow)
 
 // Quit when all windows are closed, except on macOS. There, it's common
