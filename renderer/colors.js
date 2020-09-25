@@ -17,7 +17,6 @@ let islocked = false
 
 // Functions
 const toggleShowColors = (bool) => {
-  console.log('islocked', islocked)
   if (islocked) return
 
   islocked = true
@@ -68,11 +67,9 @@ colorButtonDom.addEventListener('click', () => {
 
 // Ipc
 ipcRenderer.on('text-color-stored-display', (e, arg) => {
-  console.log('textcolor :', arg)
   changeTextColorDisplay(arg)
 })
 ipcRenderer.on('background-color-stored-display', (e, arg) => {
-  console.log('backgcol :', arg)
   changeBackgroundColorDisplay(arg)
 })
 

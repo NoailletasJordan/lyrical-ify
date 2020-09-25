@@ -241,6 +241,7 @@ header {
   bottom: 8px;
   right: 8px;
   font-size: 9px;
+  opacity: 0.2;
 }
 
 body::-webkit-scrollbar-track {

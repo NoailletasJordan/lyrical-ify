@@ -10,6 +10,7 @@ var querystring = require('querystring')
 var cookieParser = require('cookie-parser')
 const { ipcMain } = require('electron/main')
 const storage = require('electron-json-storage')
+var tcpPortUsed = require('tcp-port-used')
 
 const {
   handleTokenReceived,
@@ -62,7 +63,16 @@ const createWindow = () => {
 
   mainWindowState.manage(mainWindow)
 
-  serverWithWindowWrapper(mainWindow, childWindow)
+  tcpPortUsed.check(54860, '127.0.0.1').then(
+    function (inUse) {
+      console.log('Port 54860 usage: ' + inUse)
+      if (!inUse) serverWithWindowWrapper(mainWindow, childWindow)
+      else app.quit()
+    },
+    function (err) {
+      console.error('Error on check:', err.message)
+    }
+  )
 
   // Send env variable to renderer
   mainWindow.webContents.on('did-finish-load', () => {})
@@ -122,7 +132,6 @@ const createWindow = () => {
 
       // Get text colors from storage
       storage.get('textColor', function (error, data) {
-        console.log('text color:', data)
         if (error) throw error
         if (Object.keys(data).length === 0 && data.constructor === Object)
           return console.log('Text not found')
@@ -132,7 +141,6 @@ const createWindow = () => {
 
       // Get background colors from storage
       storage.get('backgroundColor', function (error, data) {
-        console.log('bkg color:', data)
         if (error) throw error
         if (Object.keys(data).length === 0 && data.constructor === Object)
           return console.log('Background not found')

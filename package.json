@@ -1,7 +1,7 @@
 {
   "name": "lyrical-ify",
   "productName": "lyrical-ify",
-  "version": "1.1.0",
+  "version": "1.1.2",
   "description": "Get your currently playing music's lyrics",
   "main": "index.js",
   "repository": {
@@ -84,6 +84,7 @@
     "querystring": "^0.2.0",
     "request": "^2.88.2",
     "spotify-web-api-js": "^1.5.0",
+    "tcp-port-used": "^1.0.1",
     "update-electron-app": "^1.5.0"
   },
   "devDependencies": {
