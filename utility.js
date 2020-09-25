@@ -8,7 +8,7 @@ module.exports.handleTokenReceived = handleTokenReceived = (
   mainWindow
 ) => {
   // Save to localstore
-  setFromLocalStorage(refresh_token)
+  setRefreshFromLocalStorage(refresh_token)
   console.log('refresh set on storage', refresh_token)
 
   // Send token and refresh to rederrer
@@ -22,7 +22,7 @@ module.exports.handleTokenReceived = handleTokenReceived = (
   return refresh_token
 }
 
-const setFromLocalStorage = (refresh_token) => {
+const setRefreshFromLocalStorage = (refresh_token) => {
   storage.set('refresh_token', { refresh_token }, function (error) {
     if (error) throw error
   })
@@ -32,6 +32,22 @@ module.exports.logoutFromLocalStorage = logoutFromLocalStorage = () => {
   storage.remove('refresh_token', function (error) {
     if (error) throw error
     console.log('logged out')
+  })
+}
+
+module.exports.setTextColorFromLocalStorage = logoutFromLocalStorage = (
+  textColor
+) => {
+  storage.set('textColor', { textColor }, function (error) {
+    if (error) throw error
+  })
+}
+
+module.exports.setBackgroundColorFromLocalStorage = logoutFromLocalStorage = (
+  backgroundColor
+) => {
+  storage.set('backgroundColor', { backgroundColor }, function (error) {
+    if (error) throw error
   })
 }
 

@@ -11,7 +11,12 @@ var cookieParser = require('cookie-parser')
 const { ipcMain } = require('electron/main')
 const storage = require('electron-json-storage')
 
-const { handleTokenReceived, logoutFromLocalStorage } = require('./utility')
+const {
+  handleTokenReceived,
+  logoutFromLocalStorage,
+  setBackgroundColorFromLocalStorage,
+  setTextColorFromLocalStorage,
+} = require('./utility')
 
 const client_id =  // Your client id
 const redirect_uri =  // Your redirect uri
@@ -60,13 +65,7 @@ const createWindow = () => {
   serverWithWindowWrapper(mainWindow, childWindow)
 
   // Send env variable to renderer
-  mainWindow.webContents.on('did-finish-load', () => {
-    mainWindow.webContents.send('update-variable', {
-      client_id,
-      redirect_uri,
-      genius_token,
-    })
-  })
+  mainWindow.webContents.on('did-finish-load', () => {})
 
   // Create right-click menu
   let contextMenu = Menu.buildFromTemplate([{ role: 'copy' }])
@@ -90,11 +89,20 @@ const createWindow = () => {
   // Ask html when main loaded
   mainWindow.webContents.on('did-finish-load', function () {
     console.log('main did-finish-load')
-    mainWindow.webContents.send('mess', 'App version ' + app.getVersion())
 
-    // Logic : if refresh_token found we API/refresh_token to get new one
+    // Send Variables
+    mainWindow.webContents.send('update-variable', {
+      client_id,
+      redirect_uri,
+      genius_token,
+    })
+
+    // Send version
+    mainWindow.webContents.send('version-stored-display', app.getVersion())
+
     // can't be put in utility.js
     const getFromLocalStorage = (mainWindow) => {
+      // Get token from storage
       storage.get('refresh_token', function (error, data) {
         if (error) throw error
         if (Object.keys(data).length === 0 && data.constructor === Object) {
@@ -111,6 +119,29 @@ const createWindow = () => {
         mainWindow.webContents.send('token-stored-display')
         mainWindow.webContents.send('trigger-refresh')
       })
+
+      // Get text colors from storage
+      storage.get('textColor', function (error, data) {
+        console.log('text color:', data)
+        if (error) throw error
+        if (Object.keys(data).length === 0 && data.constructor === Object)
+          return console.log('Text not found')
+        // Text color found -> send
+        mainWindow.webContents.send('text-color-stored-display', data.textColor)
+      })
+
+      // Get background colors from storage
+      storage.get('backgroundColor', function (error, data) {
+        console.log('bkg color:', data)
+        if (error) throw error
+        if (Object.keys(data).length === 0 && data.constructor === Object)
+          return console.log('Background not found')
+        // Text color found -> send
+        mainWindow.webContents.send(
+          'background-color-stored-display',
+          data.backgroundColor
+        )
+      })
     }
     getFromLocalStorage(mainWindow)
   })
@@ -119,6 +150,14 @@ const createWindow = () => {
     logoutFromLocalStorage()
     refresh_token = null
     code_verifier = null
+  })
+
+  ipcMain.on('set-background-color-storage', (event, arg) => {
+    setBackgroundColorFromLocalStorage(arg)
+  })
+
+  ipcMain.on('set-text-color-storage', (event, arg) => {
+    setTextColorFromLocalStorage(arg)
   })
 
   // Auto-update song on focus

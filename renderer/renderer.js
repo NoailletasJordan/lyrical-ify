@@ -18,6 +18,7 @@ const {
 
 const { authorize, refreshTheToken } = require('./auth')
 const { runSpotifyAndGenius } = require('./current-music')
+require('./colors')
 
 // Variables
 let client_id = null
