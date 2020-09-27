@@ -21,7 +21,6 @@ const modalStartDom = document.querySelector('.modal-start')
 const modalBrowserDom = document.querySelector('.modal-browser')
 const modal = document.querySelector('.modal')
 const loader = document.querySelector('.loader')
-const lyrics = document.querySelector('.lyrics')
 const modalBrowserBlock = document.querySelector('.modal-browser-block')
 const musicFeaturingContainer = document.querySelector(
   '.music-featuring-container'
@@ -75,8 +74,6 @@ module.exports.updateHeaderContainerDisplay = updateHeaderContainerDisplay
 // FETCH METHOD
 const fetchMethod = async (url, obj) => {
   const resBrut = await fetch(url, obj)
-
-  console.log(resBrut.status)
 
   if (resBrut.status > 200 && resBrut.status < 400) {
     return { e: { status: resBrut.status }, res: null }

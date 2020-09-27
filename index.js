@@ -19,13 +19,12 @@ const {
   setTextColorFromLocalStorage,
 } = require('./utility')
 
-const client_id =  // Your client id
-const redirect_uri =  // Your redirect uri
-const genius_token =
-  
+const client_id = '***REMOVED***' // Your client id
+const redirect_uri = 'http://localhost:54860/callback' // Your redirect uri
 
 let refresh_token = null
 let code_verifier = null
+let currentMusic
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -66,7 +65,7 @@ const createWindow = () => {
   tcpPortUsed.check(54860, '127.0.0.1').then(
     function (inUse) {
       console.log('Port 54860 usage: ' + inUse)
-      if (!inUse) serverWithWindowWrapper(mainWindow, childWindow)
+      if (!inUse) serverWithWindowWrapper(mainWindow)
       else app.quit()
     },
     function (err) {
@@ -90,10 +89,40 @@ const createWindow = () => {
   // Open the DevTools.
   //mainWindow.webContents.openDevTools()
 
+  // Child Listeners
+  childWindow.webContents.on('did-finish-load', function () {
+    const windowUrl = childWindow.webContents.getURL()
+    // Google.com
+    if (windowUrl.includes('google.com/webhp?as_q=&as_epq=&as_oq=&as')) {
+      childWindow.webContents.send('launch-search', currentMusic)
+    }
+
+    // Google search
+    if (windowUrl.includes('google.com/search?')) {
+      childWindow.webContents.send('enter-genius', currentMusic)
+    }
+
+    // Genius.com
+    if (windowUrl.includes('genius.com')) {
+      childWindow.webContents.send('sendbackhtml', currentMusic)
+    } else return console.log('fin')
+
+    /* console.log('did-finish-load -> sendbackhtml')
+      childWindow.send('sendbackhtml') */
+  })
+
   // Child Window (crawl lyrics)
-  ipcMain.on('load-url', (event, url) => {
-    childWindow.loadURL(url)
-    console.log('load-url')
+  ipcMain.on('load-url', async (event, obj) => {
+    currentMusic = obj
+    childWindow.loadURL(
+      'https://www.google.com/webhp?as_q=&as_epq=&as_oq=&as_eq=&as_nlo=&as_nhi=&lr=&cr=countryUS&as_qdr=all&as_sitesearch=&as_occt=any&safe=images&as_filetype=&tbs='
+    )
+    childWindow.webContents.setAudioMuted(true)
+  })
+
+  // No Valid url found - > trigger display
+  ipcMain.on('no-url-found', async (event, obj) => {
+    mainWindow.webContents.send('trigger-no-lyrics-display')
   })
 
   // Ask html when main loaded
@@ -104,7 +133,6 @@ const createWindow = () => {
     mainWindow.webContents.send('update-variable', {
       client_id,
       redirect_uri,
-      genius_token,
     })
 
     // Send version
@@ -144,7 +172,7 @@ const createWindow = () => {
         if (error) throw error
         if (Object.keys(data).length === 0 && data.constructor === Object)
           return console.log('Background not found')
-        // Text color found -> send
+        // background color found -> send
         mainWindow.webContents.send(
           'background-color-stored-display',
           data.backgroundColor
@@ -178,12 +206,6 @@ const createWindow = () => {
   setInterval(() => {
     intervalManager()
   }, 5000)
-
-  // Ask html when child loaded
-  childWindow.webContents.on('did-finish-load', function () {
-    console.log('did-finish-load -> sendbackhtml')
-    childWindow.send('sendbackhtml')
-  })
 
   ipcMain.on('hereishtml', (event, html) => {
     //childWindow.close()

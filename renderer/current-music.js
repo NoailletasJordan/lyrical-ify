@@ -76,80 +76,11 @@ const getCurrentMusicInfos = async (access_token) => {
   return currentMusic
 }
 
-const getUrlFromGenius = async (name, artist, artistsMax2, genius_token) => {
-  if (!genius_token) return console.log('error no genius_token')
-
-  // Format the name for the query
-  let nameCutPastParenthesis = name
-  if (name.includes('(')) {
-    nameCutPastParenthesis = Array.from(nameCutPastParenthesis)
-    const index = nameCutPastParenthesis.findIndex((r) => r === '(')
-    nameCutPastParenthesis = nameCutPastParenthesis.splice(0, index).join('')
-  }
-  // Add 'remix' to name if cropped
-  if (
-    name.toLowerCase().includes('remix') &&
-    !nameCutPastParenthesis.toLowerCase().includes('remix')
-  )
-    nameCutPastParenthesis = nameCutPastParenthesis + ' remix'
-
-  console.log(name.toLowerCase())
-
-  // Set up query search
-  const option = {
-    headers: {
-      Authorization: 'Bearer ' + genius_token,
-    },
-  }
-  const fetchUrl =
-    'https://api.genius.com/search?' +
-    querystring.stringify({
-      q: `${nameCutPastParenthesis} ${artistsMax2}`,
-    })
-  console.log('fetchUL :', fetchUrl)
-
-  // Fetch genius
-  const data = await fetchMethod(fetchUrl, option)
-
-  // Error - handled later
-  if (data.e) {
-    return console.log("Sorry we could't get this tracks lyrics ...")
-  }
-
-  let url
-  if (!data.res.response.hits.length) {
-    // Didnt find any song
-    url = ''
-  } else {
-    // OK - Song Finded
-    url = data.res.response.hits[0].result.url
-  }
-
-  // Check url
-  const urlChecked = await urlChecker(
-    option,
-    url,
-    artist,
-    nameCutPastParenthesis,
-    name
-  )
-
-  // Bad Url - handled later
-  if (!urlChecked) {
-    console.log("Sorry we could't get this tracks lyrics ...")
-    return null
-  }
-
-  // OK
-  return urlChecked
-}
-
 module.exports.runSpotifyAndGenius = runSpotifyAndGenius = async (
   access_token,
-  genius_token,
+
   musicState
 ) => {
-  if (!genius_token) return console.log('error no genius_token')
   if (!access_token) return console.log('access_token null')
 
   // Get music from spotify
@@ -164,25 +95,12 @@ module.exports.runSpotifyAndGenius = runSpotifyAndGenius = async (
     return currentMusic.name
   }
 
-  // Get url and  thumbnail from genius
-  const url = await getUrlFromGenius(
-    currentMusic.name,
-    currentMusic.artist,
-    currentMusic.artistsMax2,
-    genius_token
-  )
-
-  // Can't get the url
-  if (!url) {
-    console.log('runSpot =====>', url)
-    lyricsFoundDisplay(false)
-    return currentMusic.name
-  }
-
   // Send url to to crawl
   toggleLoadingDisplay(true)
-  ipcRenderer.send('load-url', url)
-  console.log(url)
+  ipcRenderer.send('load-url', {
+    name: currentMusic.name,
+    artistsMax2: currentMusic.artistsMax2,
+  })
 
   // return new music State
   return currentMusic.name

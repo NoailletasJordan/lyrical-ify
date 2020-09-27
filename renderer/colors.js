@@ -7,6 +7,7 @@ const bodyDom = document.querySelector('body')
 const lyricsDom = document.querySelector('.lyrics')
 const lyricsInBracketsDom = document.querySelector('.lyrics-in-brackets')
 const versionDom = document.querySelector('.version')
+const noLyricsDom = document.querySelector('.no-lyrics-found-text')
 
 // Require
 const { ipcRenderer } = require('electron/renderer')
@@ -50,9 +51,9 @@ const setTextColorStorage = (currentTextColor) => {
 }
 
 const changeTextColorDisplay = (color) => {
-  console.log(lyricsDom)
   lyricsDom.style.color = color
   versionDom.style.color = color
+  noLyricsDom.style.color = color
   lyricsInBracketsDom.style.color = color
 }
 

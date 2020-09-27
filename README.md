@@ -1,16 +1,18 @@
 # Lyrical-ify
 
-Lyrical-ify is a desktop application that finds your currently playing music on spotify.
+Lyrical-ify is a desktop application that finds your currently playing music on Spotify.
 
-![Screenshot_lyri3](https://user-images.githubusercontent.com/48062996/93918777-2081c880-fd0d-11ea-839d-8a213add2124.jpg)
+![lyri5](https://user-images.githubusercontent.com/48062996/94378084-ccb91a00-0126-11eb-9f36-16244971f1c3.jpg)
 
 ## Installation
 
-Once installed, run the executable.
+1 - Dowload the .rar file from the last release
+2 - Extract the Setup.exe file
+3 - Run the Setup.exe, it will install the app on your computer and run it.
 
 ## Usage
 
-Log in the app, play a song on your spotify, the lyrics should appear automaticly.
+Log into the app, play a song on your Spotify, the lyrics should appear automatically.
 
 Enjoy.
 

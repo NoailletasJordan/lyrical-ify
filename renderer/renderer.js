@@ -14,6 +14,7 @@ const {
   logRequestDisplay,
   closeStartModalDisplay,
   modalBrowserDisplay,
+  lyricsFoundDisplay,
 } = require('./utility-renderer')
 
 const { authorize, refreshTheToken } = require('./auth')
@@ -23,7 +24,6 @@ require('./colors')
 // Variables
 let client_id = null
 let redirect_uri = null
-let genius_token = null
 let access_token = null
 let musicState = '_'
 let tokenTimerExpire = null
@@ -33,11 +33,6 @@ let tokenTimerExpire = null
 bLoginDom.addEventListener('click', () => {
   authorize(client_id, redirect_uri)
 })
-
-// search music
-/* b3.addEventListener('click', () => {
-  musicState = async runSpotifyAndGenius(access_token, genius_token, musicState)
-}) */
 
 // Logout
 bLogoutDom.addEventListener('click', () => {
@@ -73,7 +68,6 @@ ipcRenderer.on('reply-token', (e, args) => {
 ipcRenderer.on('update-variable', (e, args) => {
   client_id = args.client_id
   redirect_uri = args.redirect_uri
-  genius_token = args.genius_token
 })
 
 // Add the lyrics into html
@@ -88,7 +82,7 @@ ipcRenderer.on('trigger-run-script', async () => {
   if (access_token)
     musicState = await runSpotifyAndGenius(
       access_token,
-      genius_token,
+
       musicState
     )
 })
@@ -135,5 +129,10 @@ ipcRenderer.on('logged-success', () => {
   modalBrowserDisplay(false)
   logRequestDisplay(false)
   toggleLoggedDisplay(true)
+  toggleLoadingDisplay(false)
+})
+
+ipcRenderer.on('trigger-no-lyrics-display', () => {
+  lyricsFoundDisplay(false)
   toggleLoadingDisplay(false)
 })
