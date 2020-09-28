@@ -5,9 +5,10 @@ console.log('preload: child')
 
 ipcRenderer.on('launch-search', (event, args) => {
   console.log('launch-search')
-  document.querySelector(
-    '.gLFyf.gsfi'
-  ).value = `genius lyrics ${args.name.slice(0, 25)} ${args.artistsMax2}`
+
+  document.querySelector('.gLFyf.gsfi').value = `genius lyrics ${nameFormatter(
+    args.name
+  )}${args.artistsMax2}`
   document.querySelector('.gNO89b').click()
 })
 
@@ -94,15 +95,6 @@ const linkSelector = (title, link, secondLink, thirdLink, fourthLink) => {
   )
     fourthLinkBool = false
 
-  // Si remix pas dans titre mais dans url
-  if (
-    !title.toLowerCase().includes('remix') &&
-    link.toLowerCase().includes('remix') &&
-    !secondLink.toLowerCase().includes('remix')
-  ) {
-    linkBool = false
-  }
-
   // check for banned words
   if (!urlWithoutBannedWords(listOfBannedWords, link)) linkBool = false
   if (!urlWithoutBannedWords(listOfBannedWords, secondLink))
@@ -112,10 +104,21 @@ const linkSelector = (title, link, secondLink, thirdLink, fourthLink) => {
   if (!urlWithoutBannedWords(listOfBannedWords, fourthLink))
     fourthLinkBool = false
 
+  // if "remix in url but not title" - this test should be last
+  if (
+    !title.toLowerCase().includes('remix') &&
+    link.toLowerCase().includes('remix') &&
+    !secondLink.toLowerCase().includes('remix') &&
+    secondLinkBool
+  ) {
+    linkBool = false
+  }
+
   console.log('linkbool', linkBool)
   console.log('secondLinkBool', secondLinkBool)
   console.log('thirdLinkBool', thirdLinkBool)
   console.log('fourthLinkBool', fourthLinkBool)
+
   // return -1 : error ; 0 = link ; 1 = secondLink
   if (linkBool) return 0
   if (secondLinkBool) return 1
@@ -133,4 +136,9 @@ function urlWithoutBannedWords(listOfBannedWords, currentLink) {
       : null
   })
   return valueReturned
+}
+
+function nameFormatter(name) {
+  // Filter "(feat." and max 25 caracter
+  return name.replace(/(\(feat.*|\(with.* | feat\..*)/gm, '').slice(0, 25)
 }
