@@ -4,7 +4,6 @@ const bLoginDom = document.querySelector('.login-button')
 const bLogoutDom = document.querySelector('.logout-button')
 
 // Require
-
 const { ipcRenderer } = require('electron/renderer')
 const {
   toggleLoadingDisplay,
@@ -19,7 +18,10 @@ const {
 
 const { authorize, refreshTheToken } = require('./auth')
 const { runSpotifyAndGenius } = require('./current-music')
+
+// Run other scripts
 require('./colors')
+require('./window-controls')
 
 // Variables
 let client_id = null

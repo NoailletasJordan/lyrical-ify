@@ -19,8 +19,8 @@ const {
   setTextColorFromLocalStorage,
 } = require('./utility')
 
-const client_id =  // Your client id
-const redirect_uri =  // Your redirect uri
+const client_id = '***REMOVED***' // Your client id
+const redirect_uri = 'http://localhost:54860/callback' // Your redirect uri
 
 let refresh_token = null
 let code_verifier = null
@@ -44,6 +44,7 @@ const createWindow = () => {
     y: mainWindowState.y,
     width: mainWindowState.width,
     height: mainWindowState.height,
+    frame: false,
     minHeight: 500,
     minWidth: 500,
     icon: path.join(__dirname + '\\assets/favicon-32x32.png'),
@@ -81,6 +82,18 @@ const createWindow = () => {
 
   mainWindow.webContents.on('context-menu', (e) => {
     contextMenu.popup()
+  })
+
+  // Handle Window controls
+  ipcMain.on('minimize-window', () => {
+    mainWindow.minimize()
+  })
+  ipcMain.on('toggle-maximize-window', () => {
+    if (mainWindow.isMaximized()) return mainWindow.unmaximize()
+    mainWindow.maximize()
+  })
+  ipcMain.on('close-window', () => {
+    app.quit()
   })
 
   // and load the index.html of the app.

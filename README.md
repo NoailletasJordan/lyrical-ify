@@ -6,9 +6,9 @@ Lyrical-ify is a desktop application that finds your currently playing music on 
 
 ## Installation
 
-1 - Dowload the .rar file from the last release
+1 - Dowload the app [here](https://lyrical-ify.jordannoailletas.com/)
 2 - Extract the Setup.exe file
-3 - Run the Setup.exe, it will install the app on your computer and run it.
+3 - Run the Setup.exe, it will install the app on your computer.
 
 ## Usage
 

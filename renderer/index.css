@@ -25,6 +25,40 @@ body {
   font-family: "Noto Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   background-color: #b1b1b1;
   background-color: #fff;
+  -webkit-app-region: no-drag;
+}
+
+.frame {
+  display: flex;
+  justify-content: space-between;
+  height: 32px;
+  background-color: #000;
+  color: white;
+  -webkit-user-select: none;
+  -webkit-app-region: drag;
+}
+.frame .window-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  -webkit-app-region: no-drag;
+}
+.frame .window-controls > * {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 46px;
+  height: 32px;
+  font-size: 11px;
+}
+.frame .window-controls > *:hover {
+  background-color: #333;
+}
+.frame .window-controls .close-window:hover {
+  background-color: #b00;
+}
+.frame .logo {
+  margin: 8px;
 }
 
 .modal-start {
@@ -89,12 +123,14 @@ body {
 }
 
 header {
-  min-height: 100px;
+  min-height: 70px;
   background-color: #000;
   color: white;
   display: flex;
   justify-content: center;
   align-items: center;
+  -webkit-user-select: none;
+  -webkit-app-region: drag;
 }
 
 .headband {
@@ -104,6 +140,7 @@ header {
   background-color: #353535;
   padding: 5px 20px;
   color: white;
+  -webkit-user-select: none;
 }
 
 .logout-container {
@@ -121,10 +158,9 @@ header {
 .music-header-container-empty {
   display: flex;
   background-color: #5d5d5d;
-  padding-top: 20px;
   color: white;
-  max-width: 45rem;
-  padding: 50px;
+  max-width: 40rem;
+  padding: 16px;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
   flex-grow: 1;
@@ -145,10 +181,11 @@ header {
 }
 
 .music-image {
-  width: 200px;
-  height: 200px;
+  width: 150px;
+  height: 150px;
   opacity: 1;
   margin-right: 20px;
+  border-radius: 10px;
 }
 
 .music-album,
