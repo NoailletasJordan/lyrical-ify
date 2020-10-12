@@ -19,8 +19,8 @@ const {
   setTextColorFromLocalStorage,
 } = require('./utility')
 
-const client_id = '***REMOVED***' // Your client id
-const redirect_uri = 'http://localhost:54860/callback' // Your redirect uri
+const client_id =  // Your client id
+const redirect_uri =  // Your redirect uri
 
 let refresh_token = null
 let code_verifier = null
