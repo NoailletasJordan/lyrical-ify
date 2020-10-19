@@ -31,6 +31,10 @@ body {
 
 .frame {
   display: flex;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 3;
   justify-content: space-between;
   height: 32px;
   background-color: #000;
@@ -127,6 +131,7 @@ body {
 }
 
 header {
+  margin-top: 32px;
   min-height: 70px;
   background-color: #000;
   color: white;
