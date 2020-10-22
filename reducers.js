@@ -1,8 +1,8 @@
 const { createStore } = require('redux')
 
 const initialState = {
-  client_id: '***REMOVED***',
-  redirect_uri: 'http://localhost:54860/callback',
+  client_id: ,
+  redirect_uri: ,
   refresh_token: null,
   access_token: null,
   music_state: '_', // Name only, used in main renderer.js

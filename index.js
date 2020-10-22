@@ -27,8 +27,6 @@ const {
 // Set up store and declare as global
 require('./reducers')
 
-const client_id = '***REMOVED***'
-
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
   app.quit()
@@ -316,7 +314,7 @@ const serverWithWindowWrapper = (mainWindow) => {
       form: {
         grant_type: 'refresh_token',
         refresh_token: store.getState().refresh_token,
-        client_id,
+        client_id: store.getState().client_id,
       },
       json: true,
     }
