@@ -18,22 +18,23 @@ const {
 
 const { authorize, refreshTheToken } = require('./auth')
 const { runSpotifyAndGenius } = require('./current-music')
+const { updateMusicState } = require('../actions')
+const remote = require('electron').remote
+
+// Get store and set it as global
+store = remote.getGlobal('store')
 
 // Run other scripts
 require('./colors')
 require('./window-controls')
 
 // Variables
-let client_id = null
-let redirect_uri = null
-let access_token = null
-let musicState = '_'
-let tokenTimerExpire = null
+let tokenTimerExpire = null // The interval
 
 // Listeners
 // Button 1
 bLoginDom.addEventListener('click', () => {
-  authorize(client_id, redirect_uri)
+  authorize(store.getState().client_id, store.getState().redirect_uri)
 })
 
 // Logout
@@ -48,28 +49,17 @@ ipcRenderer.on('mess', (e, args) => {
 
 // ipcRenderer
 ipcRenderer.on('trigger-auth', (e, args) => {
-  authorize(client_id, redirect_uri)
+  authorize(store.getState().client_id, store.getState().redirect_uri)
 })
 
 // trigger refresh
 ipcRenderer.on('trigger-refresh', async (e, refr) => {
-  access_token = await refreshTheToken()
-  if (!access_token) handleLogout()
-  console.log('ref ipc', access_token)
+  await refreshTheToken()
+  if (!store.getState().access_token) handleLogout()
+  console.log('ref ipc', store.getState().access_token)
   // Close modal if it wasnt already
   closeStartModalDisplay()
   animateTitleDisplay()
-})
-
-// Extract the tokens
-ipcRenderer.on('reply-token', (e, args) => {
-  access_token = args.access_token
-})
-
-// Get initial variables from .env
-ipcRenderer.on('update-variable', (e, args) => {
-  client_id = args.client_id
-  redirect_uri = args.redirect_uri
 })
 
 // Add the lyrics into html
@@ -81,30 +71,27 @@ ipcRenderer.on('reply-html', (e, html) => {
 
 // trigger runSpotifyAndGenius
 ipcRenderer.on('trigger-run-script', async () => {
-  if (access_token)
-    musicState = await runSpotifyAndGenius(
-      access_token,
-
-      musicState
+  if (store.getState().access_token)
+    await runSpotifyAndGenius(
+      store.getState().access_token,
+      store.getState().music_state
     )
 })
 
 // Reniew token when expire
 ipcRenderer.on('token-expire', (event, sec) => {
-  console.log('token will be reniewed in', sec, 'seconds')
-  // Right before the
   tokenTimerExpire = setTimeout(async () => {
     console.log('token expired, asking for a new one')
-    access_token = await refreshTheToken()
+    await refreshTheToken()
   }, sec * 900)
 })
 
 // Logout - Cant be imported
 const handleLogout = () => {
   ipcRenderer.send('logout')
-  access_token = null
+  store.dispatch(updateAccessToken(null))
   clearInterval(tokenTimerExpire)
-  musicState = '_'
+  store.dispatch(updateMusicState('_'))
 
   // Display
   removeLyricsDisplay()

@@ -8,6 +8,7 @@ const {
   pkce_challenge_from_verifier,
   modalBrowserDisplay,
 } = require('./utility-renderer')
+const { updateAccessToken, updateCodeVerifier } = require('../actions')
 
 module.exports.authorize = authorize = async (client_id, redirect_uri) => {
   if (!client_id) return console.log('no client_id or uri')
@@ -22,6 +23,9 @@ module.exports.authorize = authorize = async (client_id, redirect_uri) => {
   // Set up Query
   console.log('authorize()')
   const scope = 'user-read-currently-playing'
+
+  // Update codeverifier
+  await store.dispatch(updateCodeVerifier(code_verifier))
 
   // Open Browser
   shell.openExternal(
@@ -46,12 +50,11 @@ module.exports.authorize = authorize = async (client_id, redirect_uri) => {
 
 module.exports.refreshTheToken = refreshTheToken = async () => {
   const fetchUrl = 'http://localhost:54860/refresh_token?'
-
   const data = await fetchMethod(fetchUrl)
 
   //error
-  if (data.e) return null
+  if (data.e) return store.dispatch(updateAccessToken(null))
 
   console.log('refresh : ' + data.res.access_token)
-  return data.res.access_token
+  return store.dispatch(updateAccessToken(data.res.access_token))
 }

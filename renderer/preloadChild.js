@@ -1,8 +1,6 @@
 const { ipcRenderer } = require('electron')
 const listOfBannedWords = require('./banned-words')
 
-console.log('preload: child')
-
 ipcRenderer.on('launch-search', (event, args) => {
   console.log('launch-search')
 

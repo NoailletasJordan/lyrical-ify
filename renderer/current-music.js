@@ -1,6 +1,7 @@
 // Require
 var querystring = require('querystring')
 const { ipcRenderer } = require('electron/renderer')
+const { updateCurrentMusic } = require('../actions')
 
 const {
   fetchMethod,
@@ -9,6 +10,7 @@ const {
   urlChecker,
   lyricsFoundDisplay,
 } = require('./utility-renderer')
+const { updateMusicState } = require('../actions')
 
 const getCurrentMusicInfos = async (access_token) => {
   if (!access_token) return console.log('access_token null')
@@ -78,8 +80,7 @@ const getCurrentMusicInfos = async (access_token) => {
 
 module.exports.runSpotifyAndGenius = runSpotifyAndGenius = async (
   access_token,
-
-  musicState
+  music_state
 ) => {
   if (!access_token) return console.log('access_token null')
 
@@ -87,21 +88,25 @@ module.exports.runSpotifyAndGenius = runSpotifyAndGenius = async (
   const currentMusic = await getCurrentMusicInfos(access_token)
 
   // Return if no music playing
-  if (!currentMusic) return null
+  if (!currentMusic) return store.dispatch(updateMusicState(null))
 
   // Return is same music
-  if (musicState === currentMusic.name) {
+  if (music_state === currentMusic.name) {
     console.log('Same music, prevent crawling')
-    return currentMusic.name
+    return
   }
 
   // Send url to to crawl
   toggleLoadingDisplay(true)
-  ipcRenderer.send('load-url', {
-    name: currentMusic.name,
-    artistsMax2: currentMusic.artistsMax2,
-  })
+  await store.dispatch(
+    updateCurrentMusic({
+      name: currentMusic.name,
+      artistsMax2: currentMusic.artistsMax2,
+    })
+  )
+
+  ipcRenderer.send('load-url')
 
   // return new music State
-  return currentMusic.name
+  return store.dispatch(updateMusicState(currentMusic.name))
 }

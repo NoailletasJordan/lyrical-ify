@@ -1,5 +1,6 @@
 // Require
 const storage = require('electron-json-storage')
+const { updateRefreshToken } = require('./actions')
 
 module.exports.handleTokenReceived = handleTokenReceived = (
   access_token,
@@ -11,15 +12,14 @@ module.exports.handleTokenReceived = handleTokenReceived = (
   setRefreshFromLocalStorage(refresh_token)
   console.log('refresh set on storage', refresh_token)
 
-  // Send token and refresh to rederrer
-  mainWindow.webContents.send('reply-token', {
-    access_token,
-  })
+  // Update access_token
+  store.dispatch(updateAccessToken(access_token))
 
   // Set Up expiration from token
   mainWindow.webContents.send('token-expire', expires_in)
 
-  return refresh_token
+  store.dispatch(updateRefreshToken(refresh_token))
+  return
 }
 
 const setRefreshFromLocalStorage = (refresh_token) => {
