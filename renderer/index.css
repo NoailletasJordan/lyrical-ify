@@ -26,6 +26,7 @@ body {
   background-color: #b1b1b1;
   background-color: #fff;
   -webkit-app-region: no-drag;
+  background-color: #111;
 }
 
 .frame {
@@ -179,6 +180,7 @@ header {
 .lyrics {
   font-size: 17px;
   line-height: 30px;
+  color: white;
 }
 
 .lyrics-in-brackets {
@@ -215,6 +217,7 @@ header {
 .no-lyrics-found-text {
   font-size: 19px;
   text-align: center;
+  color: white;
 }
 
 .color-container {
@@ -279,7 +282,7 @@ header {
 
 .version {
   position: fixed;
-  color: rgba(0, 0, 0, 0.5);
+  color: rgba(255, 255, 255, 0.5);
   bottom: 8px;
   right: 8px;
   font-size: 9px;

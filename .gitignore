@@ -17,7 +17,6 @@ pids
 .DS_Store
 private/
 .env
-backend/
 lyrical-ify-interface/
 website/
 

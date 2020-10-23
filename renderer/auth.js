@@ -7,8 +7,9 @@ const {
   fetchMethod,
   pkce_challenge_from_verifier,
   modalBrowserDisplay,
+  toggleLoadingDisplay,
 } = require('./utility-renderer')
-const { updateAccessToken, updateCodeVerifier } = require('../actions')
+const { updateAccessToken, updateCodeVerifier } = require('../backend/actions')
 
 module.exports.authorize = authorize = async (client_id, redirect_uri) => {
   if (!client_id) return console.log('no client_id or uri')

@@ -98,13 +98,13 @@ module.exports.closeModal = closeModal = () => {
   modal.classList.add('slide-out-bck-center')
 }
 
-module.exports.toggleLoadingDisplay = toggleLoadingDisplay = (isLoading) => {
+module.exports.toggleLoadingDisplay = (isLoading) => {
   isLoading
     ? loader.classList.remove('u-display-none')
     : loader.classList.add('u-display-none')
 }
 
-module.exports.toggleLoggedDisplay = toggleLoggedDisplay = (isLogged) => {
+module.exports.toggleLoggedDisplay = (isLogged) => {
   if (isLogged) {
     bLoginDom.classList.add('u-display-none')
     logoutContainerDom.classList.remove('u-display-none')
@@ -116,26 +116,24 @@ module.exports.toggleLoggedDisplay = toggleLoggedDisplay = (isLogged) => {
   }
 }
 
-module.exports.animateTitleDisplay = animateTitleDisplay = () => {
+module.exports.animateTitleDisplay = () => {
   appTitleDom.classList.add('text-shadow-pop-bl')
 }
 
-module.exports.wizzLogButtonDisplay = wizzLogButtonDisplay = () => {
+module.exports.wizzLogButtonDisplay = () => {
   bLoginDom.classList.add('wobble-hor-bottom')
   setTimeout(() => {
     bLoginDom.classList.remove('wobble-hor-bottom')
   }, 1000)
 }
 
-module.exports.logRequestDisplay = logRequestDisplay = (bool) => {
+module.exports.logRequestDisplay = (bool) => {
   bool
     ? logRequestDom.classList.remove('u-display-none')
     : logRequestDom.classList.add('u-display-none')
 }
 
-module.exports.musicHeaderContainerDisplay = musicHeaderContainerDisplay = (
-  bool
-) => {
+module.exports.musicHeaderContainerDisplay = (bool) => {
   if (bool) {
     musicHeaderContainerDom.classList.remove('u-display-none')
     musicHeaderContainerEmptyDom.classList.add('u-display-none')
@@ -145,7 +143,7 @@ module.exports.musicHeaderContainerDisplay = musicHeaderContainerDisplay = (
   }
 }
 
-module.exports.lyricsFoundDisplay = lyricsFoundDisplay = (bool, html) => {
+module.exports.lyricsFoundDisplay = (bool, html) => {
   if (bool) {
     noLyricsFoundTextDom.classList.add('u-display-none')
     lyricsDom.classList.remove('u-display-none')
@@ -156,7 +154,7 @@ module.exports.lyricsFoundDisplay = lyricsFoundDisplay = (bool, html) => {
   }
 }
 
-module.exports.closeStartModalDisplay = closeStartModalDisplay = () => {
+module.exports.closeStartModalDisplay = () => {
   modalStartDom.classList.add('slide-out-bck-center')
   setTimeout(() => {
     modalStartDom.classList.add('u-display-none')
@@ -164,7 +162,7 @@ module.exports.closeStartModalDisplay = closeStartModalDisplay = () => {
   }, 500)
 }
 
-module.exports.modalBrowserDisplay = modalBrowserDisplay = (bool) => {
+module.exports.modalBrowserDisplay = (bool) => {
   if (bool) {
     modalBrowserDom.classList.remove('u-display-none')
     modalBrowserBlock.classList.add('slide-in-elliptic-top-fwd')
@@ -178,6 +176,6 @@ module.exports.modalBrowserDisplay = modalBrowserDisplay = (bool) => {
   }
 }
 
-module.exports.removeLyricsDisplay = removeLyricsDisplay = () => {
+module.exports.removeLyricsDisplay = () => {
   lyricsDom.innerHTML = null
 }

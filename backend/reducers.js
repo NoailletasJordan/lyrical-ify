@@ -2,7 +2,7 @@ const { createStore } = require('redux')
 
 const initialState = {
   client_id: ,
-  redirect_uri: ,
+  redirect_uri: 'http://localhost:54860/callback',
   refresh_token: null,
   access_token: null,
   music_state: '_', // Name only, used in main renderer.js
@@ -35,8 +35,8 @@ const generalState = (state = initialState, action) => {
 // Create Store
 const store = createStore(generalState)
 
-// Developpement
+// Developpement - print redux state after each changes
 //const readState = () => console.log(store.getState())
 //store.subscribe(readState)
 
-global.store = store
+module.exports = store

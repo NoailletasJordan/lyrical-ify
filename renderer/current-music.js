@@ -1,16 +1,14 @@
 // Require
-var querystring = require('querystring')
 const { ipcRenderer } = require('electron/renderer')
-const { updateCurrentMusic } = require('../actions')
+const { updateCurrentMusic } = require('../backend/actions')
 
 const {
   fetchMethod,
   updateHeaderContainerDisplay,
   musicHeaderContainerDisplay,
-  urlChecker,
-  lyricsFoundDisplay,
+  toggleLoadingDisplay,
 } = require('./utility-renderer')
-const { updateMusicState } = require('../actions')
+const { updateMusicState } = require('../backend/actions')
 
 const getCurrentMusicInfos = async (access_token) => {
   if (!access_token) return console.log('access_token null')

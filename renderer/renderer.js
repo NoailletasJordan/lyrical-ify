@@ -14,15 +14,16 @@ const {
   closeStartModalDisplay,
   modalBrowserDisplay,
   lyricsFoundDisplay,
+  removeLyricsDisplay,
 } = require('./utility-renderer')
 
 const { authorize, refreshTheToken } = require('./auth')
 const { runSpotifyAndGenius } = require('./current-music')
-const { updateMusicState } = require('../actions')
+const { updateMusicState } = require('../backend/actions')
 const remote = require('electron').remote
 
-// Get store and set it as global
-store = remote.getGlobal('store')
+// Get store (backend) and set it as global (front)
+window.store = remote.getGlobal('store')
 
 // Run other scripts
 require('./colors')
@@ -32,27 +33,23 @@ require('./window-controls')
 let tokenTimerExpire = null // The interval
 
 // Listeners
-// Button 1
 bLoginDom.addEventListener('click', () => {
   authorize(store.getState().client_id, store.getState().redirect_uri)
 })
 
-// Logout
 bLogoutDom.addEventListener('click', () => {
   handleLogout()
 })
 
-// ipcRenderer
+// IpcRenderers
 ipcRenderer.on('mess', (e, args) => {
   console.log(args)
 })
 
-// ipcRenderer
 ipcRenderer.on('trigger-auth', (e, args) => {
   authorize(store.getState().client_id, store.getState().redirect_uri)
 })
 
-// trigger refresh
 ipcRenderer.on('trigger-refresh', async (e, refr) => {
   await refreshTheToken()
   if (!store.getState().access_token) handleLogout()
@@ -62,15 +59,15 @@ ipcRenderer.on('trigger-refresh', async (e, refr) => {
   animateTitleDisplay()
 })
 
-// Add the lyrics into html
 ipcRenderer.on('reply-html', (e, html) => {
+  // Add the lyrics into html
   console.log('reply-html')
   toggleLoadingDisplay(false)
   lyricsFoundDisplay(true, html)
 })
 
-// trigger runSpotifyAndGenius
 ipcRenderer.on('trigger-run-script', async () => {
+  // trigger runSpotifyAndGenius
   if (store.getState().access_token)
     await runSpotifyAndGenius(
       store.getState().access_token,
@@ -78,29 +75,15 @@ ipcRenderer.on('trigger-run-script', async () => {
     )
 })
 
-// Reniew token when expire
 ipcRenderer.on('token-expire', (event, sec) => {
+  // Reniew token when expire
   tokenTimerExpire = setTimeout(async () => {
     console.log('token expired, asking for a new one')
     await refreshTheToken()
   }, sec * 900)
 })
 
-// Logout - Cant be imported
-const handleLogout = () => {
-  ipcRenderer.send('logout')
-  store.dispatch(updateAccessToken(null))
-  clearInterval(tokenTimerExpire)
-  store.dispatch(updateMusicState('_'))
-
-  // Display
-  removeLyricsDisplay()
-  logRequestDisplay(true)
-  toggleLoggedDisplay(false)
-  musicHeaderContainerDisplay(false)
-}
-
-// Display IPC
+// Display IpcRenderers
 ipcRenderer.on('no-token-stored-display', () => {
   closeStartModalDisplay()
   animateTitleDisplay()
@@ -125,3 +108,17 @@ ipcRenderer.on('trigger-no-lyrics-display', () => {
   lyricsFoundDisplay(false)
   toggleLoadingDisplay(false)
 })
+
+// Functions
+const handleLogout = () => {
+  ipcRenderer.send('logout')
+  store.dispatch(updateAccessToken(null))
+  clearInterval(tokenTimerExpire)
+  store.dispatch(updateMusicState('_'))
+
+  // Display
+  removeLyricsDisplay()
+  logRequestDisplay(true)
+  toggleLoggedDisplay(false)
+  musicHeaderContainerDisplay(false)
+}
