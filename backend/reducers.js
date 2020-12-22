@@ -1,7 +1,7 @@
 const { createStore } = require('redux')
 
 const initialState = {
-  client_id: ,
+  client_id: 'b10450b54169458a891922a191333187',
   redirect_uri: 'http://localhost:54860/callback',
   refresh_token: null,
   access_token: null,

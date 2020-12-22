@@ -56,7 +56,7 @@ module.exports = (app) => {
   }
   setInterval(() => {
     intervalManager()
-  }, 5000)
+  }, 1000)
 
   return mainWindow
 }
