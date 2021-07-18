@@ -1,102 +1,102 @@
 {
-  "name": "Lyrical-ify",
-  "productName": "Lyrical-ify",
-  "version": "2.3.6",
-  "description": "Get your currently playing music's lyrics",
-  "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/NoailletasJordan/lyrical-ify/"
-  },
-  "scripts": {
-    "start": "concurrently \"electron-forge start\" \"sass --watch ./renderer/index.scss ./renderer/index.css\" ",
-    "w": "concurrently \"nodemon --exec electron-forge start .\" \"sass --watch ./renderer/index.scss ./renderer/index.css\"",
-    "package": "electron-forge package",
-    "make": "electron-forge make",
-    "publish": "electron-forge publish",
-    "lint": "echo \"No linting configured\""
-  },
-  "keywords": [],
-  "author": {
-    "name": "Jordan Noailletas",
-    "email": "j.noailletas@gmail.com"
-  },
-  "license": "MIT",
-  "config": {
-    "forge": {
-      "packagerConfig": {
-        "icon": "./assets/favicon.ico",
-        "asar": true
-      },
-      "publishers": [
-        {
-          "name": "@electron-forge/publisher-github",
-          "config": {
-            "repository": {
-              "owner": "NoailletasJordan",
-              "name": "lyrical-ify"
-            },
-            "draft": "true"
-          }
-        }
-      ],
-      "makers": [
-        {
-          "name": "@electron-forge/maker-squirrel",
-          "config": {
-            "name": "lyrical_ify",
-            "certificateFile": "./private/JordanNoailletas.pfx",
-            "certificatePassword": ""
-          }
-        },
-        {
-          "name": "@electron-forge/maker-zip",
-          "platforms": [
-            "darwin"
-          ]
-        },
-        {
-          "name": "@electron-forge/maker-deb",
-          "config": {}
-        },
-        {
-          "name": "@electron-forge/maker-rpm",
-          "config": {}
-        }
-      ]
-    }
-  },
-  "dependencies": {
-    "concurrently": "^5.3.0",
-    "cookie-parser": "^1.4.5",
-    "cors": "^2.8.5",
-    "crypto-js": "^4.0.0",
-    "crypto-random-string": "^3.3.0",
-    "dotenv": "^8.2.0",
-    "electron-json-storage": "^4.2.0",
-    "electron-log": "^4.2.4",
-    "electron-squirrel-startup": "^1.0.0",
-    "electron-window-state": "^5.0.3",
-    "express": "^4.17.1",
-    "hash.js": "^1.1.7",
-    "node-fetch": "^2.6.1",
-    "object-hash": "^2.0.3",
-    "querystring": "^0.2.0",
-    "redux": "^4.0.5",
-    "request": "^2.88.2",
-    "spotify-web-api-js": "^1.5.0",
-    "tcp-port-used": "^1.0.1",
-    "update-electron-app": "^1.5.0"
-  },
-  "devDependencies": {
-    "@electron-forge/cli": "6.0.0-beta.53",
-    "nodemon": "^2.0.4",
-    "@electron-forge/maker-deb": "6.0.0-beta.53",
-    "@electron-forge/maker-rpm": "6.0.0-beta.53",
-    "@electron-forge/maker-squirrel": "6.0.0-beta.53",
-    "@electron-forge/maker-zip": "6.0.0-beta.53",
-    "@electron-forge/publisher-github": "6.0.0-beta.52",
-    "electron": "10.1.2",
-    "node-sass": "^4.14.1"
-  }
+	"name": "Lyrical-ify",
+	"productName": "Lyrical-ify",
+	"version": "2.4.0",
+	"description": "Get your currently playing music's lyrics",
+	"main": "index.js",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/NoailletasJordan/lyrical-ify/"
+	},
+	"scripts": {
+		"start": "concurrently \"electron-forge start\" \"sass --watch ./renderer/index.scss ./renderer/index.css\" ",
+		"w": "concurrently \"nodemon --exec electron-forge start .\" \"sass --watch ./renderer/index.scss ./renderer/index.css\"",
+		"package": "electron-forge package",
+		"make": "electron-forge make",
+		"publish": "electron-forge publish",
+		"lint": "echo \"No linting configured\""
+	},
+	"keywords": [],
+	"author": {
+		"name": "Jordan Noailletas",
+		"email": "j.noailletas@gmail.com"
+	},
+	"license": "MIT",
+	"config": {
+		"forge": {
+			"packagerConfig": {
+				"icon": "./assets/favicon.ico",
+				"asar": true
+			},
+			"publishers": [
+				{
+					"name": "@electron-forge/publisher-github",
+					"config": {
+						"repository": {
+							"owner": "NoailletasJordan",
+							"name": "lyrical-ify"
+						},
+						"draft": "true"
+					}
+				}
+			],
+			"makers": [
+				{
+					"name": "@electron-forge/maker-squirrel",
+					"config": {
+						"name": "lyrical_ify",
+						"certificateFile": "./private/JordanNoailletas.pfx",
+						"certificatePassword": ""
+					}
+				},
+				{
+					"name": "@electron-forge/maker-zip",
+					"platforms": [
+						"darwin"
+					]
+				},
+				{
+					"name": "@electron-forge/maker-deb",
+					"config": {}
+				},
+				{
+					"name": "@electron-forge/maker-rpm",
+					"config": {}
+				}
+			]
+		}
+	},
+	"dependencies": {
+		"concurrently": "^5.3.0",
+		"cookie-parser": "^1.4.5",
+		"cors": "^2.8.5",
+		"crypto-js": "^4.0.0",
+		"crypto-random-string": "^3.3.0",
+		"dotenv": "^8.2.0",
+		"electron-json-storage": "^4.2.0",
+		"electron-log": "^4.2.4",
+		"electron-squirrel-startup": "^1.0.0",
+		"electron-window-state": "^5.0.3",
+		"express": "^4.17.1",
+		"hash.js": "^1.1.7",
+		"node-fetch": "^2.6.1",
+		"object-hash": "^2.0.3",
+		"querystring": "^0.2.0",
+		"redux": "^4.0.5",
+		"request": "^2.88.2",
+		"spotify-web-api-js": "^1.5.0",
+		"tcp-port-used": "^1.0.1",
+		"update-electron-app": "^1.5.0"
+	},
+	"devDependencies": {
+		"@electron-forge/cli": "6.0.0-beta.53",
+		"nodemon": "^2.0.4",
+		"@electron-forge/maker-deb": "6.0.0-beta.53",
+		"@electron-forge/maker-rpm": "6.0.0-beta.53",
+		"@electron-forge/maker-squirrel": "6.0.0-beta.53",
+		"@electron-forge/maker-zip": "6.0.0-beta.53",
+		"@electron-forge/publisher-github": "6.0.0-beta.52",
+		"electron": "10.1.2",
+		"node-sass": "^4.14.1"
+	}
 }
