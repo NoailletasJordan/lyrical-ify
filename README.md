@@ -36,10 +36,15 @@ Enjoy.
           CLIENT_ID=<your-spotify-client-id>
           REDIRECT_URI=http://localhost:54860/callback
 
-
 1.  Start the local server
 
           $ npm run start
+
+## Github publishing
+
+1.  Start the command with your github token
+
+          $ GITHUB_TOKEN=<your-github-token> npm run publish
 
 ## License
 
