@@ -52,7 +52,9 @@ ipcRenderer.on('sendbackhtml', (event, arg) => {
   console.log('preload: received sendbackhtml')
   ipcRenderer.send(
     'hereishtml',
-    document.querySelector('.lyrics p:first-of-type').innerHTML
+    [...document.querySelectorAll('div[data-lyrics-container="true"]')]
+      .map((node) => node.innerHTML)
+      .join('<br/>')
   )
 })
 
