@@ -1,210 +1,241 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Lyrical-ify</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Raleway:wght@300&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+      integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="./index.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <title>Lyrical-ify</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
-    integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
-  <link rel="stylesheet" href="./index.css" />
-</head>
+  <body>
+    <div class="frame">
+      <div class="logo"><img src="../assets/favicon-16x16.png" alt="" /></div>
+      <div class="window-controls">
+        <div class="minimize-window">
+          <i class="far fa-window-minimize"></i>
+        </div>
 
-<body>
-  <div class="frame">
-    <div class="logo"><img src="../assets/favicon-16x16.png" alt="" /></div>
-    <div class="window-controls">
-      <div class="minimize-window">
-        <i class="far fa-window-minimize"></i>
-      </div>
-
-      <div class="maximize-window">
-        <i class="far fa-square"></i>
-      </div>
-      <div class="close-window">
-        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="22" height="22" viewBox="0 0 172 172"
-          style="fill: #000000">
-          <g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt"
-            stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none"
-            font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal">
-            <path d="M0,172v-172h172v172z" fill="none"></path>
-            <g fill="#ffffff">
-              <path
-                d="M46.86328,39.13672l-7.72656,7.72656l39.13672,39.13672l-39.13672,39.13672l7.72656,7.72656l39.13672,-39.13672l39.13672,39.13672l7.72656,-7.72656l-39.13672,-39.13672l39.13672,-39.13672l-7.72656,-7.72656l-39.13672,39.13672z">
-              </path>
+        <div class="maximize-window">
+          <i class="far fa-square"></i>
+        </div>
+        <div class="close-window">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            x="0px"
+            y="0px"
+            width="22"
+            height="22"
+            viewBox="0 0 172 172"
+            style="fill: #000000"
+          >
+            <g
+              fill="none"
+              fill-rule="nonzero"
+              stroke="none"
+              stroke-width="1"
+              stroke-linecap="butt"
+              stroke-linejoin="miter"
+              stroke-miterlimit="10"
+              stroke-dasharray=""
+              stroke-dashoffset="0"
+              font-family="none"
+              font-weight="none"
+              font-size="none"
+              text-anchor="none"
+              style="mix-blend-mode: normal"
+            >
+              <path d="M0,172v-172h172v172z" fill="none"></path>
+              <g fill="#ffffff">
+                <path
+                  d="M46.86328,39.13672l-7.72656,7.72656l39.13672,39.13672l-39.13672,39.13672l7.72656,7.72656l39.13672,-39.13672l39.13672,39.13672l7.72656,-7.72656l-39.13672,-39.13672l39.13672,-39.13672l-7.72656,-7.72656l-39.13672,39.13672z"
+                ></path>
+              </g>
             </g>
-          </g>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div class="modal-start">
+      <img src="../assets/Bean-Eater-1s-101px.svg" />
+      <div class="modal-start-text">Settings a couple on things</div>
+    </div>
+
+    <div class="modal-browser u-display-none">
+      <div class="modal-browser-block">
+        <img src="../assets/icons8-open-in-browser-45.png" alt="" />
+        <div class="modal-start-text">Accept permissions on your browser</div>
+      </div>
+    </div>
+
+    <header>
+      <h1>Lyrical-ify</h1>
+      <div class="loader u-display-none">
+        <div class="square-holder">
+          <div class="square"></div>
+        </div>
+      </div>
+    </header>
+    <div class="headband">
+      <!-- selector -->
+
+      <div class="color-button">
+        <svg>
+          <rect x="0" y="0" fill="none" width="100%" height="100%" />
         </svg>
+        <span>Colors</span>
       </div>
-    </div>
-  </div>
-  <div class="modal-start">
-    <img src="../assets/Bean-Eater-1s-101px.svg" />
-    <div class="modal-start-text">Settings a couple on things</div>
-  </div>
 
-  <div class="modal-browser u-display-none">
-    <div class="modal-browser-block">
-      <img src="../assets/icons8-open-in-browser-45.png" alt="" />
-      <div class="modal-start-text">Accept permissions on your browser</div>
-    </div>
-  </div>
-
-  <header>
-    <h1>Lyrical-ify</h1>
-    <div class="loader u-display-none">
-      <div class="square-holder">
-        <div class="square"></div>
-      </div>
-    </div>
-  </header>
-  <div class="headband">
-    <!-- selector -->
-
-    <div class="color-button">
-      <svg>
-        <rect x="0" y="0" fill="none" width="100%" height="100%" />
-      </svg>
-      <span>Colors</span>
-    </div>
-
-    <div class="color-container u-display-none">
-      <div class="color-container-left">
-        <div class="color-container-left-title">Text</div>
-        <div class="color-container-left-pannel">
-          <div class="color-outer u-margin-bot-8">
-            <div data-color="#fff" class="color-inner text-color"></div>
+      <div class="color-container u-display-none">
+        <div class="color-container-left">
+          <div class="color-container-left-title">Text</div>
+          <div class="color-container-left-pannel">
+            <div class="color-outer u-margin-bot-8">
+              <div data-color="#fff" class="color-inner text-color"></div>
+            </div>
+            <div class="color-outer">
+              <div data-color="#000" class="color-inner text-color"></div>
+            </div>
           </div>
-          <div class="color-outer">
-            <div data-color="#000" class="color-inner text-color"></div>
+        </div>
+
+        <div class="color-container-right">
+          <div class="color-container-right-title">Background</div>
+
+          <div class="color-container-right-pannel">
+            <div class="color-outer">
+              <div data-color="#fff" class="color-inner"></div>
+            </div>
+            <div class="color-outer">
+              <div data-color="#eee" class="color-inner"></div>
+            </div>
+            <div class="color-outer ppp">
+              <div data-color="#ddd" class="color-inner"></div>
+            </div>
+            <div class="color-outer">
+              <div data-color="#ccc" class="color-inner"></div>
+            </div>
+            <div class="color-outer ppp">
+              <div data-color="#bbb" class="color-inner"></div>
+            </div>
+            <div class="color-outer ppp">
+              <div data-color="#aaa" class="color-inner"></div>
+            </div>
+            <div class="color-outer">
+              <div data-color="#999" class="color-inner"></div>
+            </div>
+            <div class="color-outer ppp">
+              <div data-color="#888" class="color-inner"></div>
+            </div>
+            <div class="color-outer">
+              <div data-color="#777" class="color-inner"></div>
+            </div>
+            <div class="color-outer ppp">
+              <div data-color="#666" class="color-inner"></div>
+            </div>
+            <div class="color-outer">
+              <div data-color="#555" class="color-inner"></div>
+            </div>
+            <div class="color-outer ppp">
+              <div data-color="#444" class="color-inner"></div>
+            </div>
+            <div class="color-outer">
+              <div data-color="#333" class="color-inner"></div>
+            </div>
+            <div class="color-outer ppp">
+              <div data-color="#222" class="color-inner"></div>
+            </div>
+            <div class="color-outer">
+              <div data-color="#111" class="color-inner"></div>
+            </div>
+            <div class="color-outer">
+              <div data-color="#000" class="color-inner"></div>
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="color-container-right">
-        <div class="color-container-right-title">Background</div>
+      <!-- log buttons -->
 
-        <div class="color-container-right-pannel">
-          <div class="color-outer">
-            <div data-color="#fff" class="color-inner"></div>
+      <div class="login-button button-imported-log">
+        <svg>
+          <rect x="0" y="0" fill="none" width="100%" height="100%" />
+        </svg>
+        Login
+      </div>
+
+      <div class="logout-button button-imported-log u-display-none">
+        <svg>
+          <rect x="0" y="0" fill="none" width="100%" height="100%" />
+        </svg>
+        Logout
+      </div>
+    </div>
+
+    <div class="u-df">
+      <div class="music-header-container u-display-none">
+        <img class="music-image" src="" />
+        <div>
+          <h2 class="music-title"></h2>
+
+          <div class="u-italic u-grey">
+            by
+            <div class="music-artist u-ml-4"></div>
           </div>
-          <div class="color-outer">
-            <div data-color="#eee" class="color-inner"></div>
+          <div class="music-featuring-container u-italic u-grey">
+            featuring
+            <div class="music-featuring u-ml-4"></div>
           </div>
-          <div class="color-outer ppp">
-            <div data-color="#ddd" class="color-inner"></div>
-          </div>
-          <div class="color-outer">
-            <div data-color="#ccc" class="color-inner"></div>
-          </div>
-          <div class="color-outer ppp">
-            <div data-color="#bbb" class="color-inner"></div>
-          </div>
-          <div class="color-outer ppp">
-            <div data-color="#aaa" class="color-inner"></div>
-          </div>
-          <div class="color-outer">
-            <div data-color="#999" class="color-inner"></div>
-          </div>
-          <div class="color-outer ppp">
-            <div data-color="#888" class="color-inner"></div>
-          </div>
-          <div class="color-outer">
-            <div data-color="#777" class="color-inner"></div>
-          </div>
-          <div class="color-outer ppp">
-            <div data-color="#666" class="color-inner"></div>
-          </div>
-          <div class="color-outer">
-            <div data-color="#555" class="color-inner"></div>
-          </div>
-          <div class="color-outer ppp">
-            <div data-color="#444" class="color-inner"></div>
-          </div>
-          <div class="color-outer">
-            <div data-color="#333" class="color-inner"></div>
-          </div>
-          <div class="color-outer ppp">
-            <div data-color="#222" class="color-inner"></div>
-          </div>
-          <div class="color-outer">
-            <div data-color="#111" class="color-inner"></div>
-          </div>
-          <div class="color-outer">
-            <div data-color="#000" class="color-inner"></div>
+          <div class="u-italic u-grey">
+            album
+            <div class="music-album u-ml-4"></div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- log buttons -->
-
-    <div class="login-button button-imported-log">
-      <svg>
-        <rect x="0" y="0" fill="none" width="100%" height="100%" />
-      </svg>
-      Login
-    </div>
-
-    <div class="logout-button button-imported-log u-display-none">
-      <svg>
-        <rect x="0" y="0" fill="none" width="100%" height="100%" />
-      </svg>
-      Logout
-    </div>
-  </div>
-
-  <div class="u-df">
-    <div class="music-header-container u-display-none">
-      <img class="music-image" src="" />
-      <div>
-        <h2 class="music-title"></h2>
-
-        <div class="u-italic u-grey">
-          by
-          <div class="music-artist u-ml-4"></div>
+    <div class="u-df">
+      <div class="music-header-container-empty">
+        <div class="log-request u-display-none">
+          Hi friend, log in so we get this started !
         </div>
-        <div class="music-featuring-container u-italic u-grey">
-          featuring
-          <div class="music-featuring u-ml-4"></div>
-        </div>
-        <div class="u-italic u-grey">
-          album
-          <div class="music-album u-ml-4"></div>
+
+        <div class="logged-without-music">
+          I will search the lyrics as soon as you play a song
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="u-df">
-    <div class="music-header-container-empty">
-      <div class="log-request u-display-none">
-        Hi friend, log in so we get this started !
+    <div class="container">
+      <div class="no-lyrics-found-text u-display-none">
+        Hum... this is awkward but... it looks like i coudn't find the lyrics of
+        this song. Sorry about that. 😕
       </div>
 
-      <div class="logged-without-music">
-        I will search the lyrics as soon as you play a song
-      </div>
-    </div>
-  </div>
-
-  <div class="container">
-    <div class="no-lyrics-found-text u-display-none">
-      Hum... this is awkward but... it looks like i coudn't find the lyrics of
-      this song. Sorry about that. 😕
+      <div class="lyrics"></div>
     </div>
 
-    <div class="lyrics"></div>
-  </div>
-
-  <div class="version"></div>
-  <!-- fix js selector -->
-  <div class="lyrics-in-brackets" style="display: none"></div>
-</body>
-<script>
-  require('./renderer.js')
-</script>
-
+    <div class="version"></div>
+    <!-- fix js selector -->
+    <div class="lyrics-in-brackets" style="display: none"></div>
+  </body>
+  <script>
+    require('./renderer.js')
+  </script>
 </html>

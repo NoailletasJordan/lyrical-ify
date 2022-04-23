@@ -39,8 +39,6 @@ body {
   height: 32px;
   background-color: #000;
   color: white;
-  -webkit-user-select: none;
-  -webkit-app-region: drag;
 }
 .frame .window-controls {
   display: flex;
