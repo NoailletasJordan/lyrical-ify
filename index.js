@@ -33,7 +33,7 @@ app.on('ready', () => {
     },
     function (err) {
       console.error('Error on check:', err.message)
-    }
+    },
   )
 })
 

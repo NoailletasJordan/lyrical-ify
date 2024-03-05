@@ -78,7 +78,7 @@ const getCurrentMusicInfos = async (access_token) => {
 
 module.exports.runSpotifyAndGenius = runSpotifyAndGenius = async (
   access_token,
-  music_state
+  music_state,
 ) => {
   if (!access_token) return console.log('access_token null')
 
@@ -100,7 +100,7 @@ module.exports.runSpotifyAndGenius = runSpotifyAndGenius = async (
     updateCurrentMusic({
       name: currentMusic.name,
       artistsMax2: currentMusic.artistsMax2,
-    })
+    }),
   )
 
   ipcRenderer.send('load-url')

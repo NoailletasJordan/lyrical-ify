@@ -8,18 +8,18 @@ module.exports = () => {
     webPreferences: {
       nodeIntegration: false,
       preload: path.join(__dirname, '..', 'renderer', 'preloadChild.js'),
-      offscreen: true
-    }
+      offscreen: true,
+    },
   })
 
   // Child window script (crawler)
-  childWindow.webContents.on('did-finish-load', function () {
+  childWindow.webContents.on('dom-ready', function () {
     const windowUrl = childWindow.webContents.getURL()
     // Checkpoint - Google.com
     if (windowUrl === 'https://www.google.com/') {
       childWindow.webContents.send(
         'launch-search',
-        store.getState().current_music
+        store.getState().current_music,
       )
     }
 
@@ -27,7 +27,7 @@ module.exports = () => {
     if (windowUrl.includes('google.com/search?')) {
       childWindow.webContents.send(
         'enter-genius',
-        store.getState().current_music
+        store.getState().current_music,
       )
     }
 
@@ -35,7 +35,7 @@ module.exports = () => {
     if (windowUrl.includes('genius.com')) {
       childWindow.webContents.send(
         'sendbackhtml',
-        store.getState().current_music
+        store.getState().current_music,
       )
     } else return console.log('fin')
   })

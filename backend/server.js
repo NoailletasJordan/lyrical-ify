@@ -40,7 +40,7 @@ const serverWithWindowWrapper = (mainWindow) => {
           body.access_token,
           body.refresh_token,
           body.expires_in,
-          mainWindow
+          mainWindow,
         )
 
         // Trigger dyplay changes
@@ -54,7 +54,7 @@ const serverWithWindowWrapper = (mainWindow) => {
           '/#' +
             querystring.stringify({
               error: 'invalid_token',
-            })
+            }),
         )
       }
     })
@@ -80,7 +80,7 @@ const serverWithWindowWrapper = (mainWindow) => {
           body.access_token,
           body.refresh_token,
           body.expires_in,
-          mainWindow
+          mainWindow,
         )
 
         // Send back the access_token

@@ -9,10 +9,10 @@ const logoutContainerDom = document.querySelector('.logout-button')
 const appTitleDom = document.querySelector('h1')
 const logRequestDom = document.querySelector('.log-request')
 const musicHeaderContainerEmptyDom = document.querySelector(
-  '.music-header-container-empty'
+  '.music-header-container-empty',
 )
 const musicHeaderContainerDom = document.querySelector(
-  '.music-header-container'
+  '.music-header-container',
 )
 const noLyricsFoundTextDom = document.querySelector('.no-lyrics-found-text')
 const lyricsDom = document.querySelector('.lyrics')
@@ -22,7 +22,7 @@ const modal = document.querySelector('.modal')
 const loader = document.querySelector('.loader')
 const modalBrowserBlock = document.querySelector('.modal-browser-block')
 const musicFeaturingContainer = document.querySelector(
-  '.music-featuring-container'
+  '.music-featuring-container',
 )
 
 // Require
@@ -47,14 +47,13 @@ function base64urlencode(a) {
 }
 
 // Create PKCE
-module.exports.pkce_challenge_from_verifier = async function pkce_challenge_from_verifier(
-  v
-) {
-  console.log(this)
-  hashed = await sha256(v)
-  base64encoded = base64urlencode(hashed)
-  return base64encoded
-}
+module.exports.pkce_challenge_from_verifier =
+  async function pkce_challenge_from_verifier(v) {
+    console.log(this)
+    hashed = await sha256(v)
+    base64encoded = base64urlencode(hashed)
+    return base64encoded
+  }
 
 // Update state
 const updateHeaderContainerDisplay = (currentMusic) => {

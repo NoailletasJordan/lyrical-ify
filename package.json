@@ -1,7 +1,7 @@
 {
   "name": "Lyrical-ify",
   "productName": "Lyrical-ify",
-  "version": "2.5.2",
+  "version": "2.6.0",
   "description": "Get your currently playing music's lyrics",
   "main": "index.js",
   "repository": {
@@ -9,8 +9,8 @@
     "url": "https://github.com/NoailletasJordan/lyrical-ify/"
   },
   "scripts": {
-    "start": "concurrently \"electron-forge start\" \"sass --watch ./renderer/index.scss ./renderer/index.css\" ",
-    "w": "concurrently \"nodemon --exec electron-forge start .\" \"sass --watch ./renderer/index.scss ./renderer/index.css\"",
+    "start": "concurrently \"electron-forge start\" \"sass --watch --no-source-map ./renderer/index.scss ./renderer/index.min.css --style compressed\" ",
+    "w": "concurrently \"nodemon --exec electron-forge start .\" \"sass --watch --no-source-map ./renderer/index.scss ./renderer/index.min.css --style compressed\"",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
@@ -50,12 +50,6 @@
           }
         },
         {
-          "name": "@electron-forge/maker-zip",
-          "platforms": [
-            "darwin"
-          ]
-        },
-        {
           "name": "@electron-forge/maker-deb",
           "config": {}
         },
@@ -90,13 +84,13 @@
   },
   "devDependencies": {
     "@electron-forge/cli": "6.0.0-beta.53",
-    "nodemon": "^2.0.4",
     "@electron-forge/maker-deb": "6.0.0-beta.53",
     "@electron-forge/maker-rpm": "6.0.0-beta.53",
     "@electron-forge/maker-squirrel": "6.0.0-beta.53",
     "@electron-forge/maker-zip": "6.0.0-beta.53",
     "@electron-forge/publisher-github": "6.0.0-beta.52",
     "electron": "10.1.2",
-    "node-sass": "^4.14.1"
+    "nodemon": "^2.0.4",
+    "sass": "^1.71.1"
   }
 }

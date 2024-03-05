@@ -38,7 +38,7 @@ module.exports.authorize = authorize = async (client_id, redirect_uri) => {
         redirect_uri,
         code_challenge,
         code_challenge_method: 'S256',
-      })
+      }),
   )
 
   // Show modal

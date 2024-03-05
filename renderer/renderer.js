@@ -71,7 +71,7 @@ ipcRenderer.on('trigger-run-script', async () => {
   if (store.getState().access_token)
     await runSpotifyAndGenius(
       store.getState().access_token,
-      store.getState().music_state
+      store.getState().music_state,
     )
 })
 
